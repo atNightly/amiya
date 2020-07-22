@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `amiya` crate."><meta name="keywords" content="rust, rustlang, rust-lang, amiya"><title>amiya - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../amiya/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate amiya</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all amiya's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'amiya', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/amiya/lib.rs.html#1-195' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>amiya</a></span></h1><div class='docblock'><p>Amiya is a experimental middleware-based minimalism async HTTP server framework built up on the
+<a href="https://github.com/stjepang/smol"><code>smol</code></a> async runtime.</p>
+<p>As a newbie to rust's async world, It's a personal study project to learn async related concept
+and practice.</p>
+<p>It's currently still working in progress and in a very early alpha stage.</p>
+<p>API design may changes every day, <strong>DO NOT</strong> use it in any condition except for test or study!</p>
+<h2 id="goal" class="section-header"><a href="#goal">Goal</a></h2>
+<p>The goal of this project is try to build a (by that order):</p>
+<ul>
+<li>Safe</li>
+<li>Async</li>
+<li>Minimalism</li>
+<li>Easy to use</li>
+<li>Easy to extend</li>
+</ul>
+<p>HTTP framework for myself to write simple web services.</p>
+<p>Amiya uses <a href="https://github.com/http-rs/async-h1"><code>async-h1</code></a> to parse and process the request, so only HTTP version 1.1 is supported
+for now. HTTP 2.0 is not in goal list, at least for the near future.</p>
+<h2 id="examples" class="section-header"><a href="#examples">Examples</a></h2>
+<p>To start a very simple HTTP service to return Hello World to the client in all path:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">amiya</span>::<span class="ident">m</span>;
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">app</span> <span class="op">=</span> <span class="ident">amiya</span>::<span class="ident">new</span>().<span class="ident">uses</span>(<span class="macro">m</span><span class="macro">!</span>(<span class="ident">ctx</span> <span class="op">=&gt;</span>
+        <span class="ident">ctx</span>.<span class="ident">resp</span>.<span class="ident">set_body</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Hello World from: {}&quot;</span>, <span class="ident">ctx</span>.<span class="ident">path</span>()));
+    ));
+
+    <span class="kw">let</span> <span class="ident">fut</span> <span class="op">=</span> <span class="ident">app</span>.<span class="ident">listen</span>(<span class="string">&quot;[::]:8080&quot;</span>);
+
+    <span class="comment">// ... start a async runtime and block on `fut` ...</span>
+}</pre></div>
+<p>You can await or block on this <code>fut</code> to start the service.</p>
+<p>Notice any future need a async runtime to do this, and that's not amiya's goal too. But you
+can refer to <a href="https://github.com/7sDream/amiya/blob/master/examples/hello.rs"><code>examples/hello.rs</code></a> for a minimal example of how to start <a href="https://github.com/stjepang/smol"><code>smol</code></a> runtime.</p>
+<p>You can check other examples for:</p>
+<ul>
+<li>Understand onion model of Amiya's middleware system: <a href="https://github.com/7sDream/amiya/blob/master/examples/middleware.rs"><code>examples/middleware.rs</code></a></li>
+<li>How to store extra data in context: <a href="https://github.com/7sDream/amiya/blob/master/examples/extra.rs"><code>examples/extra.rs</code></a></li>
+<li>Use <code>Router</code> middleware for request diversion: <a href="https://github.com/7sDream/amiya/blob/master/examples/router.rs"><code>examples/router.rs</code></a></li>
+<li>Use another Amiya service as a middleware: <a href="https://github.com/7sDream/amiya/blob/master/examples/subapp.rs"><code>examples/subapp.rs</code></a></li>
+</ul>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table><tr class='module-item'><td><a class="mod" href="middleware/index.html" title='amiya::middleware mod'>middleware</a></td><td class='docblock-short'><p>Middleware system implement and built-in middleware provided by amiya</p>
+</td></tr></table><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+<table><tr class='module-item'><td><a class="macro" href="macro.m.html" title='amiya::m macro'>m</a></td><td class='docblock-short'><p>Writer middleware easily.</p>
+</td></tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.Amiya.html" title='amiya::Amiya struct'>Amiya</a></td><td class='docblock-short'><p>Amiya App type.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Context.html" title='amiya::Context struct'>Context</a></td><td class='docblock-short'><p>The context a middleware will works on</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Request.html" title='amiya::Request struct'>Request</a></td><td class='docblock-short'><p>An HTTP request.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Response.html" title='amiya::Response struct'>Response</a></td><td class='docblock-short'><p>An HTTP response.</p>
+</td></tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table><tr class='module-item'><td><a class="enum" href="enum.Method.html" title='amiya::Method enum'>Method</a></td><td class='docblock-short'><p>HTTP request methods.</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.StatusCode.html" title='amiya::StatusCode enum'>StatusCode</a></td><td class='docblock-short'><p>HTTP response status codes.</p>
+</td></tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table><tr class='module-item'><td><a class="fn" href="fn.new.html" title='amiya::new fn'>new</a></td><td class='docblock-short'><p>Create a <a href="struct.Amiya.html"><code>Amiya</code></a> instance</p>
+</td></tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table><tr class='module-item'><td><a class="type" href="type.Result.html" title='amiya::Result type'>Result</a></td><td class='docblock-short'><p>The Result type all middleware should returns</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../";window.currentCrate = "amiya";</script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>
