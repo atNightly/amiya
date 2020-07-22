@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["window","Getter for the `Window` object"]],"struct":[["Event","The `Event` class."],["EventTarget","The `EventTarget` class."],["MessageEvent","The `MessageEvent` class."],["Window","The `Window` class."],["Worker","The `Worker` class."],["WorkerGlobalScope","The `WorkerGlobalScope` class."]]});

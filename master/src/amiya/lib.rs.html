@@ -193,6 +193,11 @@
 <span id="193">193</span>
 <span id="194">194</span>
 <span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Amiya is a experimental middleware-based minimalism async HTTP server framework built up on the</span>
 <span class="doccomment">//! [`smol`] async runtime.</span>
@@ -206,7 +211,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Goal</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The goal of this project is try to build a (by that order):</span>
+<span class="doccomment">//! The goal of this project is try to build a (by importance order):</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! - Safe</span>
 <span class="doccomment">//! - Async</span>
@@ -218,6 +223,10 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Amiya uses [`async-h1`] to parse and process the request, so only HTTP version 1.1 is supported</span>
 <span class="doccomment">//! for now. HTTP 2.0 is not in goal list, at least for the near future.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Performance is NOT in the list too, after all, it&#39;s just a experimental. Amiya use many heap</span>
+<span class="doccomment">//! alloc (Box) and Dynamic Dispatch (Trait Object) so there maybe are some performance reduce</span>
+<span class="doccomment">//! compare to use `async-h1` directly.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Examples</span>
 <span class="doccomment">//!</span>
@@ -246,7 +255,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! - Understand onion model of Amiya&#39;s middleware system: [`examples/middleware.rs`]</span>
 <span class="doccomment">//! - How to store extra data in context: [`examples/extra.rs`]</span>
-<span class="doccomment">//! - Use `Router` middleware for request diversion: [`examples/router.rs`]</span>
+<span class="doccomment">//! - Use [`Router`] middleware for request diversion: [`examples/router.rs`]</span>
 <span class="doccomment">//! - Use another Amiya service as a middleware: [`examples/subapp.rs`]</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [`smol`]: https://github.com/stjepang/smol</span>
@@ -256,6 +265,7 @@
 <span class="doccomment">//! [`examples/extra.rs`]: https://github.com/7sDream/amiya/blob/master/examples/extra.rs</span>
 <span class="doccomment">//! [`examples/router.rs`]: https://github.com/7sDream/amiya/blob/master/examples/router.rs</span>
 <span class="doccomment">//! [`examples/subapp.rs`]: https://github.com/7sDream/amiya/blob/master/examples/subapp.rs</span>
+<span class="doccomment">//! [`Router`]: middleware/struct.Router.html</span>
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">warnings</span>)]</span>
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy</span>::<span class="ident">all</span>, <span class="ident">clippy</span>::<span class="ident">pedantic</span>, <span class="ident">clippy</span>::<span class="ident">nursery</span>)]</span>

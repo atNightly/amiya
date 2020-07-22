@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["accept","Accept a new incoming HTTP/1.1 connection."],["accept_with_opts","Accept a new incoming HTTP/1.1 connection."],["decode","Decode an HTTP request on the server."]],"struct":[["Encoder","A streaming HTTP encoder."],["ServerOptions","Configure the server."]]});
