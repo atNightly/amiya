@@ -116,8 +116,69 @@
 <span id="116">116</span>
 <span id="117">117</span>
 <span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Built-in middleware</span>
+<span class="doccomment">//! Built-in middleware.</span>
 
 <span class="kw">mod</span> <span class="ident">router</span>;
 
@@ -179,7 +240,68 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Examples</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// TODO: example</span>
+<span class="doccomment">/// ### Convert a async function to middleware</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use amiya::{Context, Result, m};</span>
+<span class="doccomment">/// async fn response(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
+<span class="doccomment">///     ctx.next().await?;</span>
+<span class="doccomment">///     ctx.resp.set_body(&quot;Hello world&quot;);</span>
+<span class="doccomment">///     Ok(())</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let app = amiya::new().uses(m!(response));</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ### Convert a block to middleware</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Syntax: `&lt;Context parameter name&gt; [: Extra data type] =&gt; { &lt;your code&gt; }`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Default extra data type is `()`, same bellow.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use amiya::m;</span>
+<span class="doccomment">/// //                                 | this `: ()` can be omitted</span>
+<span class="doccomment">/// //                                 v</span>
+<span class="doccomment">/// let app = amiya::new().uses(m!(ctx: () =&gt; {</span>
+<span class="doccomment">///     ctx.next().await?;</span>
+<span class="doccomment">///     ctx.resp.set_body(&quot;Hello world&quot;);</span>
+<span class="doccomment">///     Ok(())</span>
+<span class="doccomment">/// }));</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ### Convert a expr to middleware</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Syntax: `&lt;Context parameter name&gt; [: Extra data type] =&gt; &lt;The expr&gt;`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use amiya::{Context, Result, m};</span>
+<span class="doccomment">/// async fn response(msg: &amp;&#39;static str, mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
+<span class="doccomment">///     ctx.next().await?;</span>
+<span class="doccomment">///     ctx.resp.set_body(msg);</span>
+<span class="doccomment">///     Ok(())</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let app = amiya::new().uses(m!(ctx =&gt; response(&quot;Hello World&quot;, ctx).await));</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ### Convert  statements to middleware</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Syntax: `&lt;Context parameter name&gt; [: Extra data type] =&gt; &lt;statements&gt;`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use amiya::m;</span>
+<span class="doccomment">/// let app = amiya::new().uses(m!(ctx =&gt; ctx.resp.set_body(&quot;Hello World&quot;);));</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Notice you do not return a value here, because a `Ok(())` is auto added.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is expand to:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```text</span>
+<span class="doccomment">/// ctx.resp.set_body(&quot;Hello World&quot;);</span>
+<span class="doccomment">/// Ok(())</span>
+<span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`M`]: middleware/struct.M.html</span>
 <span class="doccomment">/// [`Middleware`]: middleware/trait.Middleware.html</span>
@@ -215,24 +337,24 @@
         <span class="macro">m</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span> })
     };
 
-    <span class="comment">// Convert one stmt</span>
-
-     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span>: <span class="ident">ident</span> : <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ex</span>: <span class="ident">ty</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>: <span class="ident">stmt</span> $(;)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">m</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ex</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span> ; <span class="prelude-val">Ok</span>(()) })
-    };
-
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span>: <span class="ident">ident</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>: <span class="ident">stmt</span> $(;)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">m</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span> ; <span class="prelude-val">Ok</span>(()) })
-    };
+    <span class="comment">// // Convert one stmt</span>
+    <span class="comment">//</span>
+    <span class="comment">//  ($ctx: ident : $ex: ty =&gt; $body: stmt $(;)?) =&gt; {</span>
+    <span class="comment">//     m!($ctx: $ex =&gt; { $body ; Ok(()) })</span>
+    <span class="comment">// };</span>
+    <span class="comment">//</span>
+    <span class="comment">// ($ctx: ident =&gt; $body: stmt $(;)?) =&gt; {</span>
+    <span class="comment">//     m!($ctx =&gt; { $body ; Ok(()) })</span>
+    <span class="comment">// };</span>
 
     <span class="comment">// Convert another</span>
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span>: <span class="ident">ident</span> : <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ex</span>: <span class="ident">ty</span> <span class="op">=</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>: <span class="ident">tt</span>)<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">m</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ex</span> <span class="op">=</span><span class="op">&gt;</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>)<span class="op">+</span> })
+        <span class="macro">m</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ex</span> <span class="op">=</span><span class="op">&gt;</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>)<span class="op">+</span> ; <span class="prelude-val">Ok</span>(()) })
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span>: <span class="ident">ident</span> <span class="op">=</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>: <span class="ident">tt</span>)<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">m</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span> <span class="op">=</span><span class="op">&gt;</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>)<span class="op">+</span> })
+        <span class="macro">m</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span> <span class="op">=</span><span class="op">&gt;</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>)<span class="op">+</span> ; <span class="prelude-val">Ok</span>(()) })
     };
 }
 </pre></div>

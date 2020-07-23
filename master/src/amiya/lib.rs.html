@@ -433,7 +433,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! there is a simplest example:</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! ```</span>
 <span class="doccomment">//! use amiya::{Context, Result, m};</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! async fn A(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
@@ -493,7 +493,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! To start a very simple HTTP service that returns `Hello World` to the client in all paths:</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! ```</span>
 <span class="doccomment">//! use amiya::m;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! fn main() {</span>
@@ -538,13 +538,13 @@
 <span class="kw">use</span> {
     <span class="ident">async_net</span>::{<span class="ident">AsyncToSocketAddrs</span>, <span class="ident">TcpListener</span>},
     <span class="ident">async_trait</span>::<span class="ident">async_trait</span>,
-    <span class="ident">middleware</span>::<span class="ident">Middleware</span>,
     <span class="ident">std</span>::{<span class="ident">fmt</span>::<span class="ident">Debug</span>, <span class="ident">io</span>, <span class="ident">sync</span>::<span class="ident">Arc</span>},
 };
 
 <span class="kw">pub</span> <span class="kw">use</span> {
     <span class="ident">context</span>::<span class="ident">Context</span>,
     <span class="ident">http_types</span>::{<span class="ident">Method</span>, <span class="ident">Request</span>, <span class="ident">Response</span>, <span class="ident">StatusCode</span>},
+    <span class="ident">middleware</span>::<span class="ident">Middleware</span>,
 };
 
 <span class="doccomment">/// The Result type all middleware should returns</span>
@@ -604,13 +604,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ## Examples</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use amiya::m;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// amiya::new().uses(m!(ctx =&gt; ctx.next().await));</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use amiya::{m, middleware::router};</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let router = router().endpoint().get(m!(</span>
@@ -650,28 +650,28 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ## Examples</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// amiya::new().listen(&quot;127.0.0.1:8080&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// amiya::new().listen((&quot;127.0.0.1&quot;, 8080));</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use std::net::Ipv4Addr;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// amiya::new().listen((Ipv4Addr::new(127, 0, 0, 1), 8080));</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use std::net::{SocketAddrV4, Ipv4Addr};</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let socket = SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 8080);</span>
     <span class="doccomment">/// amiya::new().listen(socket);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// amiya::new().listen(&quot;[::]:8080&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">listen</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">AsyncToSocketAddrs</span> <span class="op">+</span> <span class="ident">Debug</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
