@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/time-0.2.16/src/time_mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>time_mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="https://avatars0.githubusercontent.com/u/55999857"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../time/index.html'><div class='logo-container'><img src='https://avatars0.githubusercontent.com/u/55999857' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/time-0.2.16/src/time_mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>time_mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="https://avatars0.githubusercontent.com/u/55999857"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../time/index.html'><div class='logo-container'><img src='https://avatars0.githubusercontent.com/u/55999857' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1361,7 +1361,7 @@
     <span class="doccomment">/// assert_eq!(Time::midnight(), time!(0:00));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">midnight</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">midnight</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Time</span> {
             <span class="ident">hour</span>: <span class="number">0</span>,
             <span class="ident">minute</span>: <span class="number">0</span>,
@@ -1405,10 +1405,10 @@
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;For times knowable at compile-time, use the `time!` macro. For situations where a \
                 value isn&#39;t known, use `Time::try_from_hms`.&quot;</span>
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_hms</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">23</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_hms</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">23</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
         <span class="self">Self</span> {
             <span class="ident">hour</span>,
             <span class="ident">minute</span>,
@@ -1433,10 +1433,10 @@
     <span class="doccomment">/// assert!(Time::try_from_hms(0, 0, 60).is_err()); // 60 isn&#39;t a valid second.</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_from_hms</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ComponentRangeError</span><span class="op">&gt;</span> {
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">23</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_from_hms</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ComponentRangeError</span><span class="op">&gt;</span> {
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">23</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
             <span class="ident">hour</span>,
             <span class="ident">minute</span>,
@@ -1486,11 +1486,11 @@
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;For times knowable at compile-time, use the `time!` macro. For situations where a \
                 value isn&#39;t known, use `Time::try_from_hms_milli`.&quot;</span>
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_hms_milli</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>, <span class="ident">millisecond</span>: <span class="ident">u16</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">23</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">millisecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">999</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_hms_milli</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>, <span class="ident">millisecond</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">23</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">millisecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">999</span>);
         <span class="self">Self</span> {
             <span class="ident">hour</span>,
             <span class="ident">minute</span>,
@@ -1521,11 +1521,11 @@
         <span class="ident">minute</span>: <span class="ident">u8</span>,
         <span class="ident">second</span>: <span class="ident">u8</span>,
         <span class="ident">millisecond</span>: <span class="ident">u16</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ComponentRangeError</span><span class="op">&gt;</span> {
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">23</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">millisecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">999</span>);
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ComponentRangeError</span><span class="op">&gt;</span> {
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">23</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">millisecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">999</span>);
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
             <span class="ident">hour</span>,
             <span class="ident">minute</span>,
@@ -1575,11 +1575,11 @@
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;For times knowable at compile-time, use the `time!` macro. For situations where a \
                 value isn&#39;t known, use `Time::try_from_hms_micro`.&quot;</span>
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_hms_micro</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>, <span class="ident">microsecond</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">23</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">microsecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">999_999</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_hms_micro</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>, <span class="ident">microsecond</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">23</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">microsecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">999_999</span>);
         <span class="self">Self</span> {
             <span class="ident">hour</span>,
             <span class="ident">minute</span>,
@@ -1610,11 +1610,11 @@
         <span class="ident">minute</span>: <span class="ident">u8</span>,
         <span class="ident">second</span>: <span class="ident">u8</span>,
         <span class="ident">microsecond</span>: <span class="ident">u32</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ComponentRangeError</span><span class="op">&gt;</span> {
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">23</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">microsecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">999_999</span>);
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ComponentRangeError</span><span class="op">&gt;</span> {
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">23</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">microsecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">999_999</span>);
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
             <span class="ident">hour</span>,
             <span class="ident">minute</span>,
@@ -1663,11 +1663,11 @@
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;For times knowable at compile-time, use the `time!` macro. For situations where a \
                 value isn&#39;t known, use `Time::try_from_hms_nano`.&quot;</span>
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_hms_nano</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>, <span class="ident">nanosecond</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">23</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">nanosecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">999_999_999</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_hms_nano</span>(<span class="ident">hour</span>: <span class="ident">u8</span>, <span class="ident">minute</span>: <span class="ident">u8</span>, <span class="ident">second</span>: <span class="ident">u8</span>, <span class="ident">nanosecond</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">23</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">assert_value_in_range</span><span class="macro">!</span>(<span class="ident">nanosecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">999_999_999</span>);
         <span class="self">Self</span> {
             <span class="ident">hour</span>,
             <span class="ident">minute</span>,
@@ -1698,11 +1698,11 @@
         <span class="ident">minute</span>: <span class="ident">u8</span>,
         <span class="ident">second</span>: <span class="ident">u8</span>,
         <span class="ident">nanosecond</span>: <span class="ident">u32</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ComponentRangeError</span><span class="op">&gt;</span> {
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">23</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">59</span>);
-        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">nanosecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=&gt;</span> <span class="number">999_999_999</span>);
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ComponentRangeError</span><span class="op">&gt;</span> {
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">23</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">59</span>);
+        <span class="macro">ensure_value_in_range</span><span class="macro">!</span>(<span class="ident">nanosecond</span> <span class="kw">in</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">999_999_999</span>);
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
             <span class="ident">hour</span>,
             <span class="ident">minute</span>,
@@ -1725,7 +1725,7 @@
         <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This method returns a value that assumes an offset of UTC.&quot;</span>
     )]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">PrimitiveDateTime</span>::<span class="ident">now</span>().<span class="ident">time</span>()
     }
 
@@ -1739,7 +1739,7 @@
     <span class="doccomment">/// assert_eq!(time!(23:59:59).hour(), 23);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">hour</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">hour</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="ident">hour</span>
     }
 
@@ -1753,7 +1753,7 @@
     <span class="doccomment">/// assert_eq!(time!(23:59:59).minute(), 59);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">minute</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">minute</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="ident">minute</span>
     }
 
@@ -1767,7 +1767,7 @@
     <span class="doccomment">/// assert_eq!(time!(23:59:59).second(), 59);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">second</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u8</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">second</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
         <span class="self">self</span>.<span class="ident">second</span>
     }
 
@@ -1781,7 +1781,7 @@
     <span class="doccomment">/// assert_eq!(time!(23:59:59.999).millisecond(), 999);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">millisecond</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u16</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">millisecond</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
         (<span class="self">self</span>.<span class="ident">nanosecond</span>() <span class="op">/</span> <span class="number">1_000_000</span>) <span class="kw">as</span> <span class="ident">u16</span>
     }
 
@@ -1795,7 +1795,7 @@
     <span class="doccomment">/// assert_eq!(time!(23:59:59.999_999).microsecond(), 999_999);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">microsecond</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">microsecond</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">nanosecond</span>() <span class="op">/</span> <span class="number">1_000</span>
     }
 
@@ -1809,13 +1809,13 @@
     <span class="doccomment">/// assert_eq!(time!(23:59:59.999_999_999).nanosecond(), 999_999_999);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">nanosecond</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">nanosecond</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">nanosecond</span>
     }
 
     <span class="doccomment">/// Get the number of nanoseconds since midnight.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">nanoseconds_since_midnight</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">nanoseconds_since_midnight</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">hour</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">*</span> <span class="number">60</span> <span class="op">*</span> <span class="number">60</span> <span class="op">*</span> <span class="number">1_000_000_000</span>
             <span class="op">+</span> <span class="self">self</span>.<span class="ident">minute</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">*</span> <span class="number">60</span> <span class="op">*</span> <span class="number">1_000_000_000</span>
             <span class="op">+</span> <span class="self">self</span>.<span class="ident">second</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">*</span> <span class="number">1_000_000_000</span>
@@ -1824,7 +1824,7 @@
 
     <span class="doccomment">/// Create a `Time` from the number of nanoseconds since midnight.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_nanoseconds_since_midnight</span>(<span class="ident">nanosecond</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_nanoseconds_since_midnight</span>(<span class="ident">nanosecond</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">hour</span>: (<span class="ident">nanosecond</span> <span class="op">/</span> <span class="number">1_000_000_000</span> <span class="op">/</span> <span class="number">60</span> <span class="op">/</span> <span class="number">60</span> <span class="op">%</span> <span class="number">24</span>) <span class="kw">as</span> <span class="ident">u8</span>,
             <span class="ident">minute</span>: (<span class="ident">nanosecond</span> <span class="op">/</span> <span class="number">1_000_000_000</span> <span class="op">/</span> <span class="number">60</span> <span class="op">%</span> <span class="number">60</span>) <span class="kw">as</span> <span class="ident">u8</span>,
@@ -1843,7 +1843,7 @@
     <span class="doccomment">/// assert_eq!(time!(0:00).format(&quot;%r&quot;), &quot;12:00:00 am&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">format</span>(<span class="self">self</span>, <span class="ident">format</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">format</span>(<span class="self">self</span>, <span class="ident">format</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
         <span class="self">self</span>.<span class="ident">lazy_format</span>(<span class="ident">format</span>).<span class="ident">to_string</span>()
     }
 
@@ -1854,7 +1854,7 @@
     <span class="doccomment">/// assert_eq!(time!(0:00).lazy_format(&quot;%r&quot;).to_string(), &quot;12:00:00 am&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lazy_format</span>(<span class="self">self</span>, <span class="ident">format</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="ident">Display</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lazy_format</span>(<span class="self">self</span>, <span class="ident">format</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Display</span> {
         <span class="ident">DeferredFormat</span>::<span class="ident">new</span>(<span class="ident">format</span>.<span class="ident">as_ref</span>())
             .<span class="ident">with_time</span>(<span class="self">self</span>)
             .<span class="ident">to_owned</span>()
@@ -1886,79 +1886,79 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">s</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">format</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">s</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">format</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="self">Self</span>::<span class="ident">try_from_parsed_items</span>(<span class="ident">parse</span>(<span class="ident">s</span>.<span class="ident">as_ref</span>(), <span class="kw-2">&amp;</span><span class="ident">format</span>.<span class="ident">into</span>())<span class="question-mark">?</span>)
     }
 
     <span class="doccomment">/// Given the items already parsed, attempt to create a `Time`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">try_from_parsed_items</span>(<span class="ident">items</span>: <span class="ident">ParsedItems</span>) <span class="op">-&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">try_from_parsed_items</span>(<span class="ident">items</span>: <span class="ident">ParsedItems</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">items</span> {
-            ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">item</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) <span class="op">=&gt;</span> {
+            ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">item</span>:<span class="ident">ident</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">ParsedItems</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">item</span>: <span class="prelude-val">Some</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">item</span>)),<span class="kw-2">*</span>, .. }
             };
         }
 
         <span class="doccomment">/// Convert a 12-hour time to a 24-hour time.</span>
         <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-        <span class="kw">fn</span> <span class="ident">hour_12_to_24</span>(<span class="ident">hour</span>: <span class="ident">NonZeroU8</span>, <span class="ident">am_pm</span>: <span class="ident">AmPm</span>) <span class="op">-&gt;</span> <span class="ident">u8</span> {
+        <span class="kw">fn</span> <span class="ident">hour_12_to_24</span>(<span class="ident">hour</span>: <span class="ident">NonZeroU8</span>, <span class="ident">am_pm</span>: <span class="ident">AmPm</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
             <span class="kw">use</span> <span class="ident">AmPm</span>::{<span class="ident">AM</span>, <span class="ident">PM</span>};
             <span class="kw">match</span> (<span class="ident">hour</span>.<span class="ident">get</span>(), <span class="ident">am_pm</span>) {
-                (<span class="number">12</span>, <span class="ident">AM</span>) <span class="op">=&gt;</span> <span class="number">0</span>,
-                (<span class="number">12</span>, <span class="ident">PM</span>) <span class="op">=&gt;</span> <span class="number">12</span>,
-                (<span class="ident">h</span>, <span class="ident">AM</span>) <span class="op">=&gt;</span> <span class="ident">h</span>,
-                (<span class="ident">h</span>, <span class="ident">PM</span>) <span class="op">=&gt;</span> <span class="ident">h</span> <span class="op">+</span> <span class="number">12</span>,
+                (<span class="number">12</span>, <span class="ident">AM</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
+                (<span class="number">12</span>, <span class="ident">PM</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">12</span>,
+                (<span class="ident">h</span>, <span class="ident">AM</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">h</span>,
+                (<span class="ident">h</span>, <span class="ident">PM</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">h</span> <span class="op">+</span> <span class="number">12</span>,
             }
         }
 
         <span class="kw">match</span> <span class="ident">items</span> {
-            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>, <span class="ident">second</span>, <span class="ident">nanosecond</span>) <span class="op">=&gt;</span> {
+            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>, <span class="ident">second</span>, <span class="ident">nanosecond</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">Self</span>::<span class="ident">try_from_hms_nano</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>, <span class="ident">second</span>, <span class="ident">nanosecond</span>).<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>)
             }
-            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_12</span>, <span class="ident">minute</span>, <span class="ident">second</span>, <span class="ident">nanosecond</span>, <span class="ident">am_pm</span>) <span class="op">=&gt;</span> {
+            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_12</span>, <span class="ident">minute</span>, <span class="ident">second</span>, <span class="ident">nanosecond</span>, <span class="ident">am_pm</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">Self</span>::<span class="ident">try_from_hms_nano</span>(<span class="ident">hour_12_to_24</span>(<span class="ident">hour_12</span>, <span class="ident">am_pm</span>), <span class="ident">minute</span>, <span class="ident">second</span>, <span class="ident">nanosecond</span>)
                     .<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>)
             }
-            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>, <span class="ident">second</span>) <span class="op">=&gt;</span> {
+            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>, <span class="ident">second</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">Self</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>, <span class="ident">second</span>).<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>)
             }
-            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_12</span>, <span class="ident">minute</span>, <span class="ident">second</span>, <span class="ident">am_pm</span>) <span class="op">=&gt;</span> {
+            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_12</span>, <span class="ident">minute</span>, <span class="ident">second</span>, <span class="ident">am_pm</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">Self</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour_12_to_24</span>(<span class="ident">hour_12</span>, <span class="ident">am_pm</span>), <span class="ident">minute</span>, <span class="ident">second</span>)
                     .<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>)
             }
-            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>) <span class="op">=&gt;</span> <span class="self">Self</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>, <span class="number">0</span>).<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>),
-            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_12</span>, <span class="ident">minute</span>, <span class="ident">am_pm</span>) <span class="op">=&gt;</span> {
+            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour_24</span>, <span class="ident">minute</span>, <span class="number">0</span>).<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>),
+            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_12</span>, <span class="ident">minute</span>, <span class="ident">am_pm</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">Self</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour_12_to_24</span>(<span class="ident">hour_12</span>, <span class="ident">am_pm</span>), <span class="ident">minute</span>, <span class="number">0</span>).<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>)
             }
-            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_24</span>) <span class="op">=&gt;</span> <span class="self">Self</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour_24</span>, <span class="number">0</span>, <span class="number">0</span>).<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>),
-            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_12</span>, <span class="ident">am_pm</span>) <span class="op">=&gt;</span> {
+            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_24</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour_24</span>, <span class="number">0</span>, <span class="number">0</span>).<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>),
+            <span class="macro">items</span><span class="macro">!</span>(<span class="ident">hour_12</span>, <span class="ident">am_pm</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">Self</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour_12_to_24</span>(<span class="ident">hour_12</span>, <span class="ident">am_pm</span>), <span class="number">0</span>, <span class="number">0</span>).<span class="ident">map_err</span>(<span class="ident">Into</span>::<span class="ident">into</span>)
             }
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ParseError</span>::<span class="ident">InsufficientInformation</span>),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ParseError</span>::<span class="ident">InsufficientInformation</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Time</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">format</span>::{<span class="ident">time</span>, <span class="ident">Padding</span>};
 
         <span class="ident">time</span>::<span class="ident">fmt_H</span>(<span class="ident">f</span>, <span class="kw-2">*</span><span class="self">self</span>, <span class="ident">Padding</span>::<span class="prelude-val">None</span>)<span class="question-mark">?</span>;
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;:&quot;</span>)<span class="question-mark">?</span>;
         <span class="ident">time</span>::<span class="ident">fmt_M</span>(<span class="ident">f</span>, <span class="kw-2">*</span><span class="self">self</span>, <span class="ident">Padding</span>::<span class="ident">Zero</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">second</span> <span class="op">!=</span> <span class="number">0</span> <span class="op">||</span> <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">!=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">second</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;:&quot;</span>)<span class="question-mark">?</span>;
             <span class="ident">time</span>::<span class="ident">fmt_S</span>(<span class="ident">f</span>, <span class="kw-2">*</span><span class="self">self</span>, <span class="ident">Padding</span>::<span class="ident">Zero</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">!=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;.&quot;</span>)<span class="question-mark">?</span>;
 
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">%</span> <span class="number">1_000_000</span> <span class="op">==</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">%</span> <span class="number">1_000_000</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{:03}&quot;</span>, <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">/</span> <span class="number">1_000_000</span>)<span class="question-mark">?</span>;
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">%</span> <span class="number">1_000</span> <span class="op">==</span> <span class="number">0</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">%</span> <span class="number">1_000</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{:06}&quot;</span>, <span class="self">self</span>.<span class="ident">nanosecond</span> <span class="op">/</span> <span class="number">1_000</span>)<span class="question-mark">?</span>;
             } <span class="kw">else</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{:09}&quot;</span>, <span class="self">self</span>.<span class="ident">nanosecond</span>)<span class="question-mark">?</span>;
@@ -1981,7 +1981,7 @@
     <span class="doccomment">/// assert_eq!(time!(0:00:01) + (-2).seconds(), time!(23:59:59));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">Self</span>::<span class="ident">from_nanoseconds_since_midnight</span>(
             <span class="self">self</span>.<span class="ident">nanoseconds_since_midnight</span>()
                 <span class="op">+</span> <span class="ident">duration</span>
@@ -2004,7 +2004,7 @@
     <span class="doccomment">/// assert_eq!(time!(23:59:59) + 2.std_seconds(), time!(0:00:01));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">StdDuration</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">StdDuration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span> <span class="op">+</span> <span class="ident">Duration</span>::<span class="ident">try_from</span>(<span class="ident">duration</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;overflow converting `core::time::Duration` to `time::Duration`&quot;</span>)
     }
@@ -2071,7 +2071,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span> <span class="op">+</span> <span class="op">-</span><span class="ident">duration</span>
     }
 }
@@ -2089,7 +2089,7 @@
     <span class="doccomment">/// assert_eq!(time!(0:00:01) - 2.std_seconds(), time!(23:59:59));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">StdDuration</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">StdDuration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span> <span class="op">-</span> <span class="ident">Duration</span>::<span class="ident">try_from</span>(<span class="ident">duration</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;overflow converting `core::time::Duration` to `time::Duration`&quot;</span>)
     }
@@ -2152,7 +2152,7 @@
     <span class="doccomment">/// assert_eq!(time!(0:00) - time!(23:00), (-23).hours());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">Duration</span>::<span class="ident">nanoseconds</span>(
             <span class="self">self</span>.<span class="ident">nanoseconds_since_midnight</span>() <span class="kw">as</span> <span class="ident">i64</span> <span class="op">-</span> <span class="ident">rhs</span>.<span class="ident">nanoseconds_since_midnight</span>() <span class="kw">as</span> <span class="ident">i64</span>,
         )
@@ -2161,26 +2161,26 @@
 
 <span class="kw">impl</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> <span class="ident">Time</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">cmp</span>(<span class="ident">other</span>).<span class="ident">into</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Ord</span> <span class="kw">for</span> <span class="ident">Time</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-&gt;</span> <span class="ident">Ordering</span> {
+    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
         <span class="kw">use</span> <span class="ident">Ordering</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">hour</span>().<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">hour</span>()) {
-            <span class="ident">Less</span> <span class="op">=&gt;</span> <span class="ident">Less</span>,
-            <span class="ident">Greater</span> <span class="op">=&gt;</span> <span class="ident">Greater</span>,
-            <span class="ident">Equal</span> <span class="op">=&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">minute</span>().<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">minute</span>()) {
-                <span class="ident">Less</span> <span class="op">=&gt;</span> <span class="ident">Less</span>,
-                <span class="ident">Greater</span> <span class="op">=&gt;</span> <span class="ident">Greater</span>,
-                <span class="ident">Equal</span> <span class="op">=&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">second</span>().<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">second</span>()) {
-                    <span class="ident">Less</span> <span class="op">=&gt;</span> <span class="ident">Less</span>,
-                    <span class="ident">Greater</span> <span class="op">=&gt;</span> <span class="ident">Greater</span>,
-                    <span class="ident">Equal</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">nanosecond</span>().<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">nanosecond</span>()),
+            <span class="ident">Less</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Less</span>,
+            <span class="ident">Greater</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Greater</span>,
+            <span class="ident">Equal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">minute</span>().<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">minute</span>()) {
+                <span class="ident">Less</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Less</span>,
+                <span class="ident">Greater</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Greater</span>,
+                <span class="ident">Equal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">second</span>().<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">second</span>()) {
+                    <span class="ident">Less</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Less</span>,
+                    <span class="ident">Greater</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Greater</span>,
+                    <span class="ident">Equal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">nanosecond</span>().<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">nanosecond</span>()),
                 },
             },
         }
@@ -2192,7 +2192,7 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nanoseconds_since_midnight</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nanoseconds_since_midnight</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>.<span class="ident">nanoseconds_since_midnight</span>(), <span class="number">0</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">from_nanoseconds_since_midnight</span>(<span class="number">0</span>), <span class="ident">time</span>);
@@ -2207,7 +2207,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">midnight</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">midnight</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">midnight</span>(), <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>));
         <span class="prelude-val">Ok</span>(())
     }
@@ -2231,7 +2231,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_from_hms</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from_hms</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">Time</span>::<span class="ident">try_from_hms</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)<span class="question-mark">?</span>;
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>.<span class="ident">hour</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>.<span class="ident">minute</span>(), <span class="number">2</span>);
@@ -2268,7 +2268,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_from_hms_milli</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from_hms_milli</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">Time</span>::<span class="ident">try_from_hms_milli</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)<span class="question-mark">?</span>;
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>.<span class="ident">hour</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>.<span class="ident">minute</span>(), <span class="number">2</span>);
@@ -2307,7 +2307,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_from_hms_micro</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from_hms_micro</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">Time</span>::<span class="ident">try_from_hms_micro</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)<span class="question-mark">?</span>;
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>.<span class="ident">hour</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>.<span class="ident">minute</span>(), <span class="number">2</span>);
@@ -2345,7 +2345,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_from_hms_nano</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from_hms_nano</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">Time</span>::<span class="ident">try_from_hms_nano</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)<span class="question-mark">?</span>;
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>.<span class="ident">hour</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>.<span class="ident">minute</span>(), <span class="number">2</span>);
@@ -2360,7 +2360,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">hour</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">hour</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">hour</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">24</span> {
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour</span>, <span class="number">0</span>, <span class="number">0</span>)<span class="question-mark">?</span>.<span class="ident">hour</span>(), <span class="ident">hour</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">try_from_hms</span>(<span class="ident">hour</span>, <span class="number">59</span>, <span class="number">59</span>)<span class="question-mark">?</span>.<span class="ident">hour</span>(), <span class="ident">hour</span>);
@@ -2369,7 +2369,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">minute</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">minute</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">minute</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">60</span> {
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">try_from_hms</span>(<span class="number">0</span>, <span class="ident">minute</span>, <span class="number">0</span>)<span class="question-mark">?</span>.<span class="ident">minute</span>(), <span class="ident">minute</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">try_from_hms</span>(<span class="number">23</span>, <span class="ident">minute</span>, <span class="number">59</span>)<span class="question-mark">?</span>.<span class="ident">minute</span>(), <span class="ident">minute</span>);
@@ -2378,7 +2378,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">second</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">second</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">second</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">60</span> {
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">try_from_hms</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="ident">second</span>)<span class="question-mark">?</span>.<span class="ident">second</span>(), <span class="ident">second</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">try_from_hms</span>(<span class="number">23</span>, <span class="number">59</span>, <span class="ident">second</span>)<span class="question-mark">?</span>.<span class="ident">second</span>(), <span class="ident">second</span>);
@@ -2387,7 +2387,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">millisecond</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">millisecond</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">milli</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">1_000</span> {
             <span class="macro">assert_eq</span><span class="macro">!</span>(
                 <span class="ident">Time</span>::<span class="ident">try_from_hms_milli</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="ident">milli</span>)<span class="question-mark">?</span>.<span class="ident">millisecond</span>(),
@@ -2402,7 +2402,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">microsecond</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">microsecond</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">micro</span> <span class="kw">in</span> (<span class="number">0</span>..<span class="number">1_000_000</span>).<span class="ident">step_by</span>(<span class="number">1_000</span>) {
             <span class="macro">assert_eq</span><span class="macro">!</span>(
                 <span class="ident">Time</span>::<span class="ident">try_from_hms_micro</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="ident">micro</span>)<span class="question-mark">?</span>.<span class="ident">microsecond</span>(),
@@ -2417,7 +2417,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nanosecond</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nanosecond</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">nano</span> <span class="kw">in</span> (<span class="number">0</span>..<span class="number">1_000_000_000</span>).<span class="ident">step_by</span>(<span class="number">1_000_000</span>) {
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">try_from_hms_nano</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="ident">nano</span>)<span class="question-mark">?</span>.<span class="ident">nanosecond</span>(), <span class="ident">nano</span>);
             <span class="macro">assert_eq</span><span class="macro">!</span>(
@@ -2429,7 +2429,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">format</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">format</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>).<span class="ident">format</span>(<span class="string">&quot;%T&quot;</span>), <span class="string">&quot;0:00:00&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>).<span class="ident">format</span>(<span class="string">&quot;%r&quot;</span>), <span class="string">&quot;12:00:00 am&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span>).<span class="ident">format</span>(<span class="string">&quot;%T&quot;</span>), <span class="string">&quot;23:59:59&quot;</span>);
@@ -2438,7 +2438,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">parse</span>(<span class="string">&quot;0:00:00&quot;</span>, <span class="string">&quot;%T&quot;</span>), <span class="prelude-val">Ok</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>)));
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">parse</span>(<span class="string">&quot;23:59:59&quot;</span>, <span class="string">&quot;%T&quot;</span>), <span class="prelude-val">Ok</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span>)));
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">parse</span>(<span class="string">&quot;1:00:00 am&quot;</span>, <span class="string">&quot;%r&quot;</span>), <span class="prelude-val">Ok</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">1</span>:<span class="number">00</span>)));
@@ -2465,7 +2465,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_missing_seconds</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_missing_seconds</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="comment">// Missing seconds defaults to zero.</span>
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">parse</span>(<span class="string">&quot;0:00&quot;</span>, <span class="string">&quot;%-H:%M&quot;</span>), <span class="prelude-val">Ok</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>)));
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">parse</span>(<span class="string">&quot;23:59&quot;</span>, <span class="string">&quot;%H:%M&quot;</span>), <span class="prelude-val">Ok</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">59</span>)));
@@ -2475,7 +2475,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">parse_missing_minutes</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_missing_minutes</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="comment">// Missing minutes defaults to zero.</span>
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">parse</span>(<span class="string">&quot;0&quot;</span>, <span class="string">&quot;%-H&quot;</span>), <span class="prelude-val">Ok</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>)));
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">Time</span>::<span class="ident">parse</span>(<span class="string">&quot;23&quot;</span>, <span class="string">&quot;%H&quot;</span>), <span class="prelude-val">Ok</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">00</span>)));
@@ -2485,7 +2485,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">display</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">display</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>).<span class="ident">to_string</span>(), <span class="string">&quot;0:00&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">59</span>).<span class="ident">to_string</span>(), <span class="string">&quot;23:59&quot;</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span>).<span class="ident">to_string</span>(), <span class="string">&quot;23:59:59&quot;</span>);
@@ -2497,7 +2497,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add_duration</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">add_duration</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>) <span class="op">+</span> <span class="number">1</span>.<span class="ident">seconds</span>(), <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>:<span class="number">01</span>));
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>) <span class="op">+</span> <span class="number">1</span>.<span class="ident">minutes</span>(), <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">01</span>));
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>) <span class="op">+</span> <span class="number">1</span>.<span class="ident">hours</span>(), <span class="macro">time</span><span class="macro">!</span>(<span class="number">1</span>:<span class="number">00</span>));
@@ -2506,25 +2506,25 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add_assign_duration</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">add_assign_duration</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">time</span> <span class="op">=</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>);
 
-        <span class="ident">time</span> <span class="op">+=</span> <span class="number">1</span>.<span class="ident">seconds</span>();
+        <span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">seconds</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>:<span class="number">01</span>));
 
-        <span class="ident">time</span> <span class="op">+=</span> <span class="number">1</span>.<span class="ident">minutes</span>();
+        <span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">minutes</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">01</span>:<span class="number">01</span>));
 
-        <span class="ident">time</span> <span class="op">+=</span> <span class="number">1</span>.<span class="ident">hours</span>();
+        <span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">hours</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">1</span>:<span class="number">01</span>:<span class="number">01</span>));
 
-        <span class="ident">time</span> <span class="op">+=</span> <span class="number">1</span>.<span class="ident">days</span>();
+        <span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">days</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">1</span>:<span class="number">01</span>:<span class="number">01</span>));
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub_duration</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">sub_duration</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">12</span>:<span class="number">00</span>) <span class="op">-</span> <span class="number">1</span>.<span class="ident">hours</span>(), <span class="macro">time</span><span class="macro">!</span>(<span class="number">11</span>:<span class="number">00</span>));
 
         <span class="comment">// Underflow</span>
@@ -2536,25 +2536,25 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub_assign_duration</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">sub_assign_duration</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">time</span> <span class="op">=</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>);
 
-        <span class="ident">time</span> <span class="op">-=</span> <span class="number">1</span>.<span class="ident">seconds</span>();
+        <span class="ident">time</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">seconds</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span>));
 
-        <span class="ident">time</span> <span class="op">-=</span> <span class="number">1</span>.<span class="ident">minutes</span>();
+        <span class="ident">time</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">minutes</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">58</span>:<span class="number">59</span>));
 
-        <span class="ident">time</span> <span class="op">-=</span> <span class="number">1</span>.<span class="ident">hours</span>();
+        <span class="ident">time</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">hours</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">22</span>:<span class="number">58</span>:<span class="number">59</span>));
 
-        <span class="ident">time</span> <span class="op">-=</span> <span class="number">1</span>.<span class="ident">days</span>();
+        <span class="ident">time</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">days</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">22</span>:<span class="number">58</span>:<span class="number">59</span>));
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add_std_duration</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">add_std_duration</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert_eq</span><span class="macro">!</span>(
             <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>) <span class="op">+</span> <span class="number">1</span>.<span class="ident">std_milliseconds</span>(),
             <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">001_000_000</span>)
@@ -2567,25 +2567,25 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add_assign_std_duration</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">add_assign_std_duration</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">time</span> <span class="op">=</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>);
 
-        <span class="ident">time</span> <span class="op">+=</span> <span class="number">1</span>.<span class="ident">std_seconds</span>();
+        <span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">std_seconds</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>:<span class="number">01</span>));
 
-        <span class="ident">time</span> <span class="op">+=</span> <span class="number">1</span>.<span class="ident">std_minutes</span>();
+        <span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">std_minutes</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">01</span>:<span class="number">01</span>));
 
-        <span class="ident">time</span> <span class="op">+=</span> <span class="number">1</span>.<span class="ident">std_hours</span>();
+        <span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">std_hours</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">1</span>:<span class="number">01</span>:<span class="number">01</span>));
 
-        <span class="ident">time</span> <span class="op">+=</span> <span class="number">1</span>.<span class="ident">std_days</span>();
+        <span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">std_days</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">1</span>:<span class="number">01</span>:<span class="number">01</span>));
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub_std_duration</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">sub_std_duration</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">12</span>:<span class="number">00</span>) <span class="op">-</span> <span class="number">1</span>.<span class="ident">std_hours</span>(), <span class="macro">time</span><span class="macro">!</span>(<span class="number">11</span>:<span class="number">00</span>));
 
         <span class="comment">// Underflow</span>
@@ -2601,25 +2601,25 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub_assign_std_duration</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">sub_assign_std_duration</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">time</span> <span class="op">=</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>);
 
-        <span class="ident">time</span> <span class="op">-=</span> <span class="number">1</span>.<span class="ident">std_seconds</span>();
+        <span class="ident">time</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">std_seconds</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">59</span>:<span class="number">59</span>));
 
-        <span class="ident">time</span> <span class="op">-=</span> <span class="number">1</span>.<span class="ident">std_minutes</span>();
+        <span class="ident">time</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">std_minutes</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">23</span>:<span class="number">58</span>:<span class="number">59</span>));
 
-        <span class="ident">time</span> <span class="op">-=</span> <span class="number">1</span>.<span class="ident">std_hours</span>();
+        <span class="ident">time</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">std_hours</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">22</span>:<span class="number">58</span>:<span class="number">59</span>));
 
-        <span class="ident">time</span> <span class="op">-=</span> <span class="number">1</span>.<span class="ident">std_days</span>();
+        <span class="ident">time</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>.<span class="ident">std_days</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">time</span>, <span class="macro">time</span><span class="macro">!</span>(<span class="number">22</span>:<span class="number">58</span>:<span class="number">59</span>));
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sub_time</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">sub_time</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>) <span class="op">-</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>), <span class="number">0</span>.<span class="ident">seconds</span>());
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">1</span>:<span class="number">00</span>) <span class="op">-</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>), <span class="number">1</span>.<span class="ident">hours</span>());
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">1</span>:<span class="number">00</span>) <span class="op">-</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>:<span class="number">01</span>), <span class="number">59</span>.<span class="ident">minutes</span>() <span class="op">+</span> <span class="number">59</span>.<span class="ident">seconds</span>());
@@ -2627,7 +2627,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ordering</span>() <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">ordering</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">assert</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>) <span class="op">&lt;</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>:<span class="number">00</span>:<span class="number">000_000_001</span>));
         <span class="macro">assert</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>) <span class="op">&lt;</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">0</span>:<span class="number">00</span>:<span class="number">01</span>));
         <span class="macro">assert</span><span class="macro">!</span>(<span class="macro">time</span><span class="macro">!</span>(<span class="number">12</span>:<span class="number">00</span>) <span class="op">&gt;</span> <span class="macro">time</span><span class="macro">!</span>(<span class="number">11</span>:<span class="number">00</span>));

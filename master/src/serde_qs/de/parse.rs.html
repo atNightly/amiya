@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_qs-0.6.1/src/de/parse.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>parse.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../serde_qs/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_qs-0.6.1/src/de/parse.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>parse.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../serde_qs/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -606,10 +606,10 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>;
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">tu</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> <span class="kw-2">*</span><span class="ident">x</span>,
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">custom</span>(<span class="string">&quot;query string ended before expected&quot;</span>)),
+            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">x</span>,
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">custom</span>(<span class="string">&quot;query string ended before expected&quot;</span>)),
         }
     };
 }
@@ -622,11 +622,11 @@
     <span class="kw">fn</span> <span class="ident">insert_map_value</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">value</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Level</span>::<span class="ident">Nested</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">map</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="ident">key</span>) {
-                <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">mut</span> <span class="ident">o</span>) <span class="op">=&gt;</span> {
+                <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">mut</span> <span class="ident">o</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// Throw away old result; map is now invalid anyway.</span>
                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">o</span>.<span class="ident">insert</span>(<span class="ident">Level</span>::<span class="ident">Invalid</span>(<span class="string">&quot;Multiple values for one key&quot;</span>));
                 }
-                <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">vm</span>) <span class="op">=&gt;</span> {
+                <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">vm</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// Map is empty, result is None</span>
                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">vm</span>.<span class="ident">insert</span>(<span class="ident">Level</span>::<span class="ident">Flat</span>(<span class="ident">value</span>));
                 }
@@ -647,11 +647,11 @@
     <span class="kw">fn</span> <span class="ident">insert_ord_seq_value</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Level</span>::<span class="ident">OrderedSeq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">map</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="ident">key</span>) {
-                <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">mut</span> <span class="ident">o</span>) <span class="op">=&gt;</span> {
+                <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">mut</span> <span class="ident">o</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// Throw away old result; map is now invalid anyway.</span>
                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">o</span>.<span class="ident">insert</span>(<span class="ident">Level</span>::<span class="ident">Invalid</span>(<span class="string">&quot;Multiple values for one key&quot;</span>));
                 }
-                <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">vm</span>) <span class="op">=&gt;</span> {
+                <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">vm</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// Map is empty, result is None</span>
                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">vm</span>.<span class="ident">insert</span>(<span class="ident">Level</span>::<span class="ident">Flat</span>(<span class="ident">value</span>));
                 }
@@ -718,49 +718,49 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">u8</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">preparse_brackets</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
-            <span class="ident">ParsingState</span>::<span class="ident">Value</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>,
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">strict</span>,
+            <span class="ident">ParsingState</span>::<span class="ident">Value</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">strict</span>,
         };
         <span class="kw">if</span> <span class="ident">preparse_brackets</span> {
             <span class="comment">// in non-strict mode, we will happily decode any bracket</span>
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">take</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>),
-                <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
-                    <span class="self">self</span>.<span class="ident">index</span> <span class="op">+=</span> <span class="number">1</span>;
-                    <span class="self">self</span>.<span class="ident">acc</span>.<span class="number">1</span> <span class="op">+=</span> <span class="number">1</span>;
+                <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>),
+                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+                    <span class="self">self</span>.<span class="ident">acc</span>.<span class="number">1</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                     <span class="kw">match</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>() {
-                        <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="kw">if</span> <span class="ident">v</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="string">b&#39;%&#39;</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">len</span>() <span class="op">&gt;=</span> <span class="number">2</span> <span class="op">=&gt;</span> {
+                        <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="kw">if</span> <span class="ident">v</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="string">b&#39;%&#39;</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">as_slice</span>()[..<span class="number">2</span>] {
-                                <span class="string">b&quot;5B&quot;</span> <span class="op">=&gt;</span> {
+                                <span class="string">b&quot;5B&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
                                     <span class="comment">// skip the next two characters</span>
                                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>();
                                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>();
-                                    <span class="self">self</span>.<span class="ident">index</span> <span class="op">+=</span> <span class="number">2</span>;
+                                    <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">2</span>;
                                     <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="string">b&#39;[&#39;</span>)
                                 }
-                                <span class="string">b&quot;5D&quot;</span> <span class="op">=&gt;</span> {
+                                <span class="string">b&quot;5D&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
                                     <span class="comment">// skip the next two characters</span>
                                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>();
                                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>();
-                                    <span class="self">self</span>.<span class="ident">index</span> <span class="op">+=</span> <span class="number">2</span>;
+                                    <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">2</span>;
                                     <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="string">b&#39;]&#39;</span>)
                                 }
-                                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>),
+                                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>),
                             }
                         }
-                        <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>),
-                        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+                        <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>),
+                        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
                     }
                 }
             }
         } <span class="kw">else</span> {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">take</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>),
-                <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
-                    <span class="self">self</span>.<span class="ident">index</span> <span class="op">+=</span> <span class="number">1</span>;
-                    <span class="self">self</span>.<span class="ident">acc</span>.<span class="number">1</span> <span class="op">+=</span> <span class="number">1</span>;
+                <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>),
+                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+                    <span class="self">self</span>.<span class="ident">acc</span>.<span class="number">1</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                     <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>()
                 }
             }
@@ -770,7 +770,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">is_some</span>() {
             <span class="self">self</span>.<span class="ident">peeked</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">next</span>() {
@@ -784,14 +784,14 @@
 
 <span class="doccomment">/// Replace b&#39;+&#39; with b&#39; &#39;</span>
 <span class="doccomment">/// Copied from [`form_urlencoded`](https://github.com/servo/rust-url/blob/380be29859adb859e861c2d765897c22ec878e01/src/form_urlencoded.rs#L125).</span>
-<span class="kw">fn</span> <span class="ident">replace_plus</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> {
-    <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">b</span><span class="op">|</span> <span class="ident">b</span> <span class="op">==</span> <span class="string">b&#39;+&#39;</span>) {
-        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="ident">input</span>),
-        <span class="prelude-val">Some</span>(<span class="ident">first_position</span>) <span class="op">=&gt;</span> {
+<span class="kw">fn</span> <span class="ident">replace_plus</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> {
+    <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">b</span><span class="op">|</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;+&#39;</span>) {
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="ident">input</span>),
+        <span class="prelude-val">Some</span>(<span class="ident">first_position</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">replaced</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">to_owned</span>();
             <span class="ident">replaced</span>[<span class="ident">first_position</span>] <span class="op">=</span> <span class="string">b&#39; &#39;</span>;
             <span class="kw">for</span> <span class="ident">byte</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">replaced</span>[<span class="ident">first_position</span> <span class="op">+</span> <span class="number">1</span>..] {
-                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">==</span> <span class="string">b&#39;+&#39;</span> {
+                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;+&#39;</span> {
                     <span class="kw-2">*</span><span class="ident">byte</span> <span class="op">=</span> <span class="string">b&#39; &#39;</span>;
                 }
             }
@@ -802,7 +802,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">encoded</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">depth</span>: <span class="ident">usize</span>, <span class="ident">strict</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">encoded</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">depth</span>: <span class="ident">usize</span>, <span class="ident">strict</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Parser</span> {
             <span class="ident">inner</span>: <span class="ident">encoded</span>,
             <span class="ident">iter</span>: <span class="ident">encoded</span>.<span class="ident">iter</span>(),
@@ -824,25 +824,25 @@
     <span class="doccomment">/// the parser.</span>
     <span class="doccomment">/// Avoids allocations when neither percent encoded, nor `&#39;+&#39;` values are</span>
     <span class="doccomment">/// present.</span>
-    <span class="kw">fn</span> <span class="ident">collect_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">collect_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">replaced</span> <span class="op">=</span> <span class="ident">replace_plus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>[<span class="self">self</span>.<span class="ident">acc</span>.<span class="number">0</span>..<span class="self">self</span>.<span class="ident">acc</span>.<span class="number">1</span> <span class="op">-</span> <span class="number">1</span>]);
-        <span class="kw">let</span> <span class="ident">ret</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span> <span class="op">=</span>
+        <span class="kw">let</span> <span class="ident">ret</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
             <span class="kw">match</span> <span class="ident">percent_encoding</span>::<span class="ident">percent_decode</span>(<span class="kw-2">&amp;</span><span class="ident">replaced</span>).<span class="ident">decode_utf8</span>()<span class="question-mark">?</span> {
-                <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
+                <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">match</span> <span class="ident">replaced</span> {
-                        <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
+                        <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="comment">// In this case, neither method made replacements, so we</span>
                             <span class="comment">// reuse the original bytes</span>
                             <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>[<span class="self">self</span>.<span class="ident">acc</span>.<span class="number">0</span>..<span class="self">self</span>.<span class="ident">acc</span>.<span class="number">1</span> <span class="op">-</span> <span class="number">1</span>])<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(<span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="ident">res</span>))
                         }
-                        <span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">owned</span>) <span class="op">=&gt;</span> {
+                        <span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">owned</span>) <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">owned</span>)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>(<span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">res</span>))
                         }
                     }
                 }
-                <span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">owned</span>) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">owned</span>)),
+                <span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">owned</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">owned</span>)),
             };
         <span class="self">self</span>.<span class="ident">clear_acc</span>();
         <span class="ident">ret</span>.<span class="ident">map_err</span>(<span class="ident">Error</span>::<span class="ident">from</span>)
@@ -850,15 +850,15 @@
 
     <span class="doccomment">/// In some ways the main way to use a `Parser`, this runs the parsing step</span>
     <span class="doccomment">/// and outputs a simple `Deserializer` over the parsed map.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_deserializer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">QsDeserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">as_deserializer</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">QsDeserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">BTreeMap</span>::<span class="ident">default</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">root</span> <span class="op">=</span> <span class="ident">Level</span>::<span class="ident">Nested</span>(<span class="ident">map</span>);
 
         <span class="comment">// Parses all top level nodes into the `root` map.</span>
         <span class="kw">while</span> <span class="self">self</span>.<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">root</span>)<span class="question-mark">?</span> {}
         <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">root</span> {
-            <span class="ident">Level</span>::<span class="ident">Nested</span>(<span class="ident">map</span>) <span class="op">=&gt;</span> <span class="ident">map</span>.<span class="ident">into_iter</span>(),
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="ident">BTreeMap</span>::<span class="ident">default</span>().<span class="ident">into_iter</span>(),
+            <span class="ident">Level</span>::<span class="ident">Nested</span>(<span class="ident">map</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">map</span>.<span class="ident">into_iter</span>(),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">BTreeMap</span>::<span class="ident">default</span>().<span class="ident">into_iter</span>(),
         };
         <span class="prelude-val">Ok</span>(<span class="ident">QsDeserializer</span> { <span class="ident">iter</span>, <span class="ident">value</span>: <span class="prelude-val">None</span> })
     }
@@ -868,24 +868,24 @@
     <span class="doccomment">/// approprate parsing function.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `Ok(false)` when there is no more string to parse.</span>
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Level</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Level</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="comment">// First character determines parsing type</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">depth</span> <span class="op">==</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">depth</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
             <span class="comment">// Hit the maximum depth level, so parse everything as a key</span>
             <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">parse_key</span>(<span class="string">b&#39;=&#39;</span>, <span class="bool-val">false</span>)<span class="question-mark">?</span>;
             <span class="self">self</span>.<span class="ident">parse_map_value</span>(<span class="ident">key</span>, <span class="ident">node</span>)<span class="question-mark">?</span>;
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>);
         }
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">x</span> {
-                    <span class="string">b&#39;[&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;[&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">loop</span> {
                             <span class="self">self</span>.<span class="ident">clear_acc</span>();
                             <span class="comment">// Only peek at the next value to determine the key type.</span>
                             <span class="kw">match</span> <span class="macro">tu</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">peek</span>()) {
                                 <span class="comment">// key is of the form &quot;[..=&quot;, not really allowed.</span>
-                                <span class="string">b&#39;[&#39;</span> <span class="op">=&gt;</span> {
+                                <span class="string">b&#39;[&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                                     <span class="comment">// If we&#39;re in strict mode, error, otherwise just ignore it.</span>
                                     <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strict</span> {
                                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="kw">super</span>::<span class="ident">Error</span>::<span class="ident">parse_err</span>(<span class="string">&quot;found another opening bracket before the closed bracket&quot;</span>, <span class="self">self</span>.<span class="ident">index</span>));
@@ -894,7 +894,7 @@
                                     }
                                 }
                                 <span class="comment">// key is simply &quot;[]&quot;, so treat as a seq.</span>
-                                <span class="string">b&#39;]&#39;</span> <span class="op">=&gt;</span> {
+                                <span class="string">b&#39;]&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                                     <span class="comment">// throw away the bracket</span>
                                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">next</span>();
                                     <span class="self">self</span>.<span class="ident">clear_acc</span>();
@@ -902,7 +902,7 @@
                                     <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>);
                                 }
                                 <span class="comment">// First character is an integer, attempt to parse it as an integer key</span>
-                                <span class="string">b&#39;0&#39;</span>..<span class="op">=</span><span class="string">b&#39;9&#39;</span> <span class="op">=&gt;</span> {
+                                <span class="string">b&#39;0&#39;</span>..<span class="op">=</span><span class="string">b&#39;9&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                                     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">parse_key</span>(<span class="string">b&#39;]&#39;</span>, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
                                     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span>
                                         <span class="ident">usize</span>::<span class="ident">from_str_radix</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="number">10</span>).<span class="ident">map_err</span>(<span class="ident">Error</span>::<span class="ident">from</span>)<span class="question-mark">?</span>;
@@ -910,12 +910,12 @@
                                     <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>);
                                 }
                                 <span class="comment">// Key is &quot;[a..=&quot; so parse up to the closing &quot;]&quot;</span>
-                                <span class="number">0x20</span>..<span class="op">=</span><span class="number">0x2f</span> <span class="op">|</span> <span class="number">0x3a</span>..<span class="op">=</span><span class="number">0x5a</span> <span class="op">|</span> <span class="number">0x5c</span> <span class="op">|</span> <span class="number">0x5e</span>..<span class="op">=</span><span class="number">0x7e</span> <span class="op">=&gt;</span> {
+                                <span class="number">0x20</span>..<span class="op">=</span><span class="number">0x2f</span> <span class="op">|</span> <span class="number">0x3a</span>..<span class="op">=</span><span class="number">0x5a</span> <span class="op">|</span> <span class="number">0x5c</span> <span class="op">|</span> <span class="number">0x5e</span>..<span class="op">=</span><span class="number">0x7e</span> <span class="op">=</span><span class="op">&gt;</span> {
                                     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">parse_key</span>(<span class="string">b&#39;]&#39;</span>, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
                                     <span class="self">self</span>.<span class="ident">parse_map_value</span>(<span class="ident">key</span>, <span class="ident">node</span>)<span class="question-mark">?</span>;
                                     <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>);
                                 }
-                                <span class="ident">c</span> <span class="op">=&gt;</span> {
+                                <span class="ident">c</span> <span class="op">=</span><span class="op">&gt;</span> {
                                     <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strict</span> {
                                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="kw">super</span>::<span class="ident">Error</span>::<span class="ident">parse_err</span>(
                                             <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
@@ -932,7 +932,7 @@
                         }
                     }
                     <span class="comment">// Skip empty byte sequences (e.g. leading `&amp;`, trailing `&amp;`, `&amp;&amp;`, ...)</span>
-                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="self">self</span>.<span class="ident">clear_acc</span>();
                         <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)
                     }
@@ -940,7 +940,7 @@
                     <span class="comment">// of the form &quot;abc&quot; or &quot;abc[..=]&quot;</span>
                     <span class="comment">// We do actually allow integer keys here since they cannot</span>
                     <span class="comment">// be confused with sequences</span>
-                    <span class="kw">_</span> <span class="op">=&gt;</span> {
+                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> { <span class="self">self</span>.<span class="ident">parse_key</span>(<span class="string">b&#39;[&#39;</span>, <span class="bool-val">false</span>)<span class="question-mark">?</span> };
                         <span class="comment">// Root keys are _always_ map values</span>
                         <span class="self">self</span>.<span class="ident">parse_map_value</span>(<span class="ident">key</span>, <span class="ident">node</span>)<span class="question-mark">?</span>;
@@ -949,7 +949,7 @@
                 }
             }
             <span class="comment">// Ran out of characters to parse</span>
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
         }
     }
 
@@ -962,21 +962,21 @@
     <span class="doccomment">/// returned to the buffer to be peeked. This is important when</span>
     <span class="doccomment">/// parsing keys like `abc[def][ghi]` since the `&#39;[&#39;` character is</span>
     <span class="doccomment">/// needed to for the next iteration of `parse`.</span>
-    <span class="kw">fn</span> <span class="ident">parse_key</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">end_on</span>: <span class="ident">u8</span>, <span class="ident">consume</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_key</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">end_on</span>: <span class="ident">u8</span>, <span class="ident">consume</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">ParsingState</span>::<span class="ident">Key</span>;
         <span class="kw">loop</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">next</span>() {
                 <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">x</span> {
-                    <span class="ident">c</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="ident">end_on</span> <span class="op">=&gt;</span> {
+                    <span class="ident">c</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="ident">end_on</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// Add this character back to the buffer for peek.</span>
                         <span class="kw">if</span> <span class="op">!</span><span class="ident">consume</span> {
                             <span class="self">self</span>.<span class="ident">peeked</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>);
                         }
                         <span class="kw">return</span> <span class="self">self</span>.<span class="ident">collect_str</span>();
                     }
-                    <span class="string">b&#39;=&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;=&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// Allow the &#39;=&#39; byte only when parsing keys within []</span>
-                        <span class="kw">if</span> <span class="ident">end_on</span> <span class="op">!=</span> <span class="string">b&#39;]&#39;</span> {
+                        <span class="kw">if</span> <span class="ident">end_on</span> <span class="op">!</span><span class="op">=</span> <span class="string">b&#39;]&#39;</span> {
                             <span class="comment">// Otherwise, we have reached the end of the key</span>
                             <span class="comment">// Add this character back to the buffer for peek.</span>
                             <span class="self">self</span>.<span class="ident">peeked</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>);
@@ -985,13 +985,13 @@
 
                         <span class="comment">// otherwise do nothing, so &#39;=&#39; is accumulated</span>
                     }
-                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// important to keep the `&amp;` character so we know the</span>
                         <span class="comment">// key-value is of the form `key&amp;..=` (i.e. no value)</span>
                         <span class="self">self</span>.<span class="ident">peeked</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="string">b&#39;&amp;&#39;</span>);
                         <span class="kw">return</span> <span class="self">self</span>.<span class="ident">collect_str</span>();
                     }
-                    <span class="kw">_</span> <span class="op">=&gt;</span> {
+                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// for any other character</span>
                         <span class="comment">// do nothing, keep adding to key</span>
                     }
@@ -1005,26 +1005,26 @@
 
     <span class="doccomment">/// The `(key,value)` pair is determined to be corresponding to a map entry,</span>
     <span class="doccomment">/// so parse it as such. The first part of the `key` has been parsed.</span>
-    <span class="kw">fn</span> <span class="ident">parse_map_value</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Level</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_map_value</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Level</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">ParsingState</span>::<span class="ident">Key</span>;
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">loop</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">peek</span>() {
                 <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">x</span> {
-                    <span class="string">b&#39;=&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;=&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// Key is finished, parse up until the &#39;&amp;&#39; as the value</span>
                         <span class="self">self</span>.<span class="ident">clear_acc</span>();
                         <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">ParsingState</span>::<span class="ident">Value</span>;
-                        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">take_while</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">!=</span> <span class="kw-2">&amp;</span><span class="string">b&#39;&amp;&#39;</span>) {}
+                        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">take_while</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">!</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="string">b&#39;&amp;&#39;</span>) {}
                         <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">collect_str</span>()<span class="question-mark">?</span>;
                         <span class="ident">node</span>.<span class="ident">insert_map_value</span>(<span class="ident">key</span>, <span class="ident">value</span>);
                         <span class="kw">break</span> <span class="prelude-val">Ok</span>(());
                     }
-                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// No value</span>
                         <span class="ident">node</span>.<span class="ident">insert_map_value</span>(<span class="ident">key</span>, <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="string">&quot;&quot;</span>));
                         <span class="kw">break</span> <span class="prelude-val">Ok</span>(());
                     }
-                    <span class="string">b&#39;[&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;[&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// The key continues to another level of nested.</span>
                         <span class="comment">// Add a new unitialised level for this node and continue.</span>
                         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Level</span>::<span class="ident">Uninitialised</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">node</span> {
@@ -1032,7 +1032,7 @@
                         }
                         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Level</span>::<span class="ident">Nested</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">map</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">node</span> {
                             <span class="comment">// By parsing we drop down another level</span>
-                            <span class="self">self</span>.<span class="ident">depth</span> <span class="op">-=</span> <span class="number">1</span>;
+                            <span class="self">self</span>.<span class="ident">depth</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
                             <span class="comment">// Either take the existing entry, or add a new</span>
                             <span class="comment">// unitialised level</span>
                             <span class="comment">// Use this new node to keep parsing</span>
@@ -1050,7 +1050,7 @@
                             ));
                         }
                     }
-                    <span class="ident">c</span> <span class="op">=&gt;</span> {
+                    <span class="ident">c</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// Anything else is unexpected since we just finished</span>
                         <span class="comment">// parsing a key.</span>
                         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strict</span> {
@@ -1073,7 +1073,7 @@
             }
         };
         <span class="comment">// We have finished parsing this level, so go back up a level.</span>
-        <span class="self">self</span>.<span class="ident">depth</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="self">self</span>.<span class="ident">depth</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="ident">res</span>
     }
 
@@ -1081,27 +1081,27 @@
     <span class="doccomment">/// ordered sequence.</span>
     <span class="doccomment">/// Basically the same as the above, but we insert into `OrderedSeq`</span>
     <span class="doccomment">/// Can potentially be merged?</span>
-    <span class="kw">fn</span> <span class="ident">parse_ord_seq_value</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">usize</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Level</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_ord_seq_value</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">usize</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Level</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">ParsingState</span>::<span class="ident">Key</span>;
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">loop</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">peek</span>() {
                 <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">x</span> {
-                    <span class="string">b&#39;=&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;=&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// Key is finished, parse up until the &#39;&amp;&#39; as the value</span>
                         <span class="self">self</span>.<span class="ident">clear_acc</span>();
                         <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">ParsingState</span>::<span class="ident">Value</span>;
-                        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">take_while</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">!=</span> <span class="kw-2">&amp;</span><span class="string">b&#39;&amp;&#39;</span>) {}
+                        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">take_while</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">!</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="string">b&#39;&amp;&#39;</span>) {}
                         <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">collect_str</span>()<span class="question-mark">?</span>;
                         <span class="comment">// Reached the end of the key string</span>
                         <span class="ident">node</span>.<span class="ident">insert_ord_seq_value</span>(<span class="ident">key</span>, <span class="ident">value</span>);
                         <span class="kw">break</span> <span class="prelude-val">Ok</span>(());
                     }
-                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// No value</span>
                         <span class="ident">node</span>.<span class="ident">insert_ord_seq_value</span>(<span class="ident">key</span>, <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="string">&quot;&quot;</span>));
                         <span class="kw">break</span> <span class="prelude-val">Ok</span>(());
                     }
-                    <span class="string">b&#39;[&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;[&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// The key continues to another level of nested.</span>
                         <span class="comment">// Add a new unitialised level for this node and continue.</span>
                         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Level</span>::<span class="ident">Uninitialised</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">node</span> {
@@ -1109,7 +1109,7 @@
                         }
                         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Level</span>::<span class="ident">OrderedSeq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">map</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">node</span> {
                             <span class="comment">// By parsing we drop down another level</span>
-                            <span class="self">self</span>.<span class="ident">depth</span> <span class="op">-=</span> <span class="number">1</span>;
+                            <span class="self">self</span>.<span class="ident">depth</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
                             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">parse</span>(
                                 <span class="comment">// Either take the existing entry, or add a new</span>
                                 <span class="comment">// unitialised level</span>
@@ -1129,7 +1129,7 @@
                             ));
                         }
                     }
-                    <span class="ident">c</span> <span class="op">=&gt;</span> {
+                    <span class="ident">c</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// Anything else is unexpected since we just finished</span>
                         <span class="comment">// parsing a key.</span>
                         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strict</span> {
@@ -1149,47 +1149,47 @@
             }
         };
         <span class="comment">// We have finished parsing this level, so go back up a level.</span>
-        <span class="self">self</span>.<span class="ident">depth</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="self">self</span>.<span class="ident">depth</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="ident">res</span>
     }
 
     <span class="doccomment">/// The `(key,value)` pair is determined to be corresponding to an</span>
     <span class="doccomment">/// unordered sequence.</span>
     <span class="doccomment">/// This must be the final level of nesting, so assume we have a value</span>
-    <span class="kw">fn</span> <span class="ident">parse_seq_value</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Level</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_seq_value</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Level</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">ParsingState</span>::<span class="ident">Key</span>;
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peek</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">x</span> {
-                    <span class="string">b&#39;=&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;=&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// Key is finished, parse up until the &#39;&amp;&#39; as the value</span>
                         <span class="self">self</span>.<span class="ident">clear_acc</span>();
                         <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">ParsingState</span>::<span class="ident">Value</span>;
-                        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">take_while</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">!=</span> <span class="kw-2">&amp;</span><span class="string">b&#39;&amp;&#39;</span>) {}
+                        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">take_while</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">!</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="string">b&#39;&amp;&#39;</span>) {}
                         <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">collect_str</span>()<span class="question-mark">?</span>;
                         <span class="ident">node</span>.<span class="ident">insert_seq_value</span>(<span class="ident">value</span>);
                         <span class="prelude-val">Ok</span>(())
                     }
-                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=&gt;</span> {
+                    <span class="string">b&#39;&amp;&#39;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// key value is empty</span>
                         <span class="ident">node</span>.<span class="ident">insert_seq_value</span>(<span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="string">&quot;&quot;</span>));
                         <span class="prelude-val">Ok</span>(())
                     }
-                    <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="kw">super</span>::<span class="ident">Error</span>::<span class="ident">parse_err</span>(
+                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="kw">super</span>::<span class="ident">Error</span>::<span class="ident">parse_err</span>(
                         <span class="string">&quot;non-indexed sequence of \
                          structs not supported&quot;</span>,
                         <span class="self">self</span>.<span class="ident">index</span>,
                     )),
                 }
             }
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// The string has ended, so the value is empty.</span>
                 <span class="ident">node</span>.<span class="ident">insert_seq_value</span>(<span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="string">&quot;&quot;</span>));
                 <span class="prelude-val">Ok</span>(())
             }
         };
         <span class="comment">// We have finished parsing this level, so go back up a level.</span>
-        <span class="self">self</span>.<span class="ident">depth</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="self">self</span>.<span class="ident">depth</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="ident">res</span>
     }
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/aes-gcm-0.5.0/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../aes_gcm/index.html'><div class='logo-container'><img src='https://raw.githubusercontent.com/RustCrypto/meta/master/logo_small.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/aes-gcm-0.6.0/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../aes_gcm/index.html'><div class='logo-container'><img src='https://raw.githubusercontent.com/RustCrypto/meta/master/logo_small.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -320,6 +320,14 @@
 <span id="320">320</span>
 <span id="321">321</span>
 <span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! AES-GCM: [Authenticated Encryption and Associated Data (AEAD)][1] cipher</span>
 <span class="doccomment">//! based on AES in [Galois/Counter Mode][2].</span>
@@ -356,14 +364,19 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//! use aes_gcm::Aes256Gcm; // Or `Aes128Gcm`</span>
-<span class="doccomment">//! use aead::{Aead, NewAead, generic_array::GenericArray};</span>
+<span class="doccomment">//! use aes_gcm::aead::{Aead, NewAead, generic_array::GenericArray};</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! let key = GenericArray::clone_from_slice(b&quot;an example very very secret key.&quot;);</span>
-<span class="doccomment">//! let aead = Aes256Gcm::new(key);</span>
+<span class="doccomment">//! let key = GenericArray::from_slice(b&quot;an example very very secret key.&quot;);</span>
+<span class="doccomment">//! let cipher = Aes256Gcm::new(key);</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! let nonce = GenericArray::from_slice(b&quot;unique nonce&quot;); // 96-bits; unique per message</span>
-<span class="doccomment">//! let ciphertext = aead.encrypt(nonce, b&quot;plaintext message&quot;.as_ref()).expect(&quot;encryption failure!&quot;);</span>
-<span class="doccomment">//! let plaintext = aead.decrypt(nonce, ciphertext.as_ref()).expect(&quot;decryption failure!&quot;);</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! let ciphertext = cipher.encrypt(nonce, b&quot;plaintext message&quot;.as_ref())</span>
+<span class="doccomment">//!     .expect(&quot;encryption failure!&quot;); // NOTE: handle this error to avoid panics!</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! let plaintext = cipher.decrypt(nonce, ciphertext.as_ref())</span>
+<span class="doccomment">//!     .expect(&quot;decryption failure!&quot;); // NOTE: handle this error to avoid panics!</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//! assert_eq!(&amp;plaintext, b&quot;plaintext message&quot;);</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
@@ -372,24 +385,25 @@
 <span class="doccomment">//! This crate has an optional `alloc` feature which can be disabled in e.g.</span>
 <span class="doccomment">//! microcontroller environments that don&#39;t have a heap.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The [`Aead::encrypt_in_place`][5] and [`Aead::decrypt_in_place`][6]</span>
-<span class="doccomment">//! methods accept any type that impls the [`aead::Buffer`][7] trait which</span>
+<span class="doccomment">//! The [`AeadInPlace::encrypt_in_place`] and [`AeadInPlace::decrypt_in_place`]</span>
+<span class="doccomment">//! methods accept any type that impls the [`aead::Buffer`] trait which</span>
 <span class="doccomment">//! contains the plaintext for encryption or ciphertext for decryption.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Note that if you enable the `heapless` feature of this crate,</span>
-<span class="doccomment">//! you will receive an impl of `aead::Buffer` for [`heapless::Vec`][8]</span>
-<span class="doccomment">//! (re-exported from the `aead` crate as `aead::heapless::Vec`),</span>
+<span class="doccomment">//! you will receive an impl of [`aead::Buffer`] for `heapless::Vec`</span>
+<span class="doccomment">//! (re-exported from the [`aead`] crate as [`aead::heapless::Vec`]),</span>
 <span class="doccomment">//! which can then be passed as the `buffer` parameter to the in-place encrypt</span>
 <span class="doccomment">//! and decrypt methods:</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```</span>
+<span class="doccomment">//! # #[cfg(feature = &quot;heapless&quot;)]</span>
+<span class="doccomment">//! # {</span>
 <span class="doccomment">//! use aes_gcm::Aes256Gcm; // Or `Aes128Gcm`</span>
-<span class="doccomment">//! use aead::{Aead, NewAead};</span>
-<span class="doccomment">//! use aead::generic_array::{GenericArray, typenum::U128};</span>
-<span class="doccomment">//! use aead::heapless::Vec;</span>
+<span class="doccomment">//! use aes_gcm::aead::{AeadInPlace, NewAead, generic_array::GenericArray};</span>
+<span class="doccomment">//! use aes_gcm::aead::heapless::{Vec, consts::U128};</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! let key = GenericArray::clone_from_slice(b&quot;an example very very secret key.&quot;);</span>
-<span class="doccomment">//! let aead = Aes256Gcm::new(key);</span>
+<span class="doccomment">//! let key = GenericArray::from_slice(b&quot;an example very very secret key.&quot;);</span>
+<span class="doccomment">//! let cipher = Aes256Gcm::new(key);</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! let nonce = GenericArray::from_slice(b&quot;unique nonce&quot;); // 96-bits; unique per message</span>
 <span class="doccomment">//!</span>
@@ -397,59 +411,61 @@
 <span class="doccomment">//! buffer.extend_from_slice(b&quot;plaintext message&quot;);</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! // Encrypt `buffer` in-place, replacing the plaintext contents with ciphertext</span>
-<span class="doccomment">//! aead.encrypt_in_place(nonce, b&quot;&quot;, &amp;mut buffer).expect(&quot;encryption failure!&quot;);</span>
+<span class="doccomment">//! cipher.encrypt_in_place(nonce, b&quot;&quot;, &amp;mut buffer).expect(&quot;encryption failure!&quot;);</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! // `buffer` now contains the message ciphertext</span>
 <span class="doccomment">//! assert_ne!(&amp;buffer, b&quot;plaintext message&quot;);</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! // Decrypt `buffer` in-place, replacing its ciphertext context with the original plaintext</span>
-<span class="doccomment">//! aead.decrypt_in_place(nonce, b&quot;&quot;, &amp;mut buffer).expect(&quot;decryption failure!&quot;);</span>
+<span class="doccomment">//! cipher.decrypt_in_place(nonce, b&quot;&quot;, &amp;mut buffer).expect(&quot;decryption failure!&quot;);</span>
 <span class="doccomment">//! assert_eq!(&amp;buffer, b&quot;plaintext message&quot;);</span>
+<span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [1]: https://en.wikipedia.org/wiki/Authenticated_encryption</span>
 <span class="doccomment">//! [2]: https://en.wikipedia.org/wiki/Galois/Counter_Mode</span>
 <span class="doccomment">//! [3]: https://research.nccgroup.com/2020/02/26/public-report-rustcrypto-aes-gcm-and-chacha20poly1305-implementation-review/</span>
 <span class="doccomment">//! [4]: https://www.mobilecoin.com/</span>
-<span class="doccomment">//! [5]: https://docs.rs/aead/latest/aead/trait.Aead.html#method.encrypt_in_place</span>
-<span class="doccomment">//! [6]: https://docs.rs/aead/latest/aead/trait.Aead.html#method.decrypt_in_place</span>
-<span class="doccomment">//! [7]: https://docs.rs/aead/latest/aead/trait.Buffer.html</span>
-<span class="doccomment">//! [8]: https://docs.rs/heapless/latest/heapless/struct.Vec.html</span>
 
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">feature</span>(<span class="ident">doc_cfg</span>))]</span>
 <span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_logo_url</span> <span class="op">=</span> <span class="string">&quot;https://raw.githubusercontent.com/RustCrypto/meta/master/logo_small.png&quot;</span>)]</span>
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">unsafe_code</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>, <span class="ident">rust_2018_idioms</span>)]</span>
 
 <span class="kw">mod</span> <span class="ident">ctr</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">aead</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">aead</span>::{<span class="self">self</span>, <span class="ident">AeadInPlace</span>, <span class="ident">Error</span>, <span class="ident">NewAead</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;aes&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">aes</span>;
 
 <span class="kw">use</span> <span class="self">self</span>::<span class="ident">ctr</span>::<span class="ident">Ctr32</span>;
-<span class="kw">use</span> <span class="ident">aead</span>::{<span class="ident">Aead</span>, <span class="ident">Error</span>, <span class="ident">NewAead</span>};
-<span class="kw">use</span> <span class="ident">block_cipher_trait</span>::<span class="ident">generic_array</span>::{
-    <span class="ident">typenum</span>::{<span class="ident">U0</span>, <span class="ident">U16</span>},
-    <span class="ident">ArrayLength</span>, <span class="ident">GenericArray</span>,
+<span class="kw">use</span> <span class="ident">block_cipher</span>::{
+    <span class="ident">consts</span>::{<span class="ident">U0</span>, <span class="ident">U16</span>},
+    <span class="ident">generic_array</span>::{<span class="ident">ArrayLength</span>, <span class="ident">GenericArray</span>},
+    <span class="ident">Block</span>, <span class="ident">BlockCipher</span>, <span class="ident">Key</span>, <span class="ident">NewBlockCipher</span>,
 };
-<span class="kw">use</span> <span class="ident">block_cipher_trait</span>::<span class="ident">BlockCipher</span>;
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
-<span class="kw">use</span> <span class="ident">ghash</span>::{<span class="ident">universal_hash</span>::<span class="ident">UniversalHash</span>, <span class="ident">GHash</span>};
+<span class="kw">use</span> <span class="ident">ghash</span>::{
+    <span class="ident">universal_hash</span>::{<span class="ident">NewUniversalHash</span>, <span class="ident">UniversalHash</span>},
+    <span class="ident">GHash</span>,
+};
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;zeroize&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">zeroize</span>::<span class="ident">Zeroize</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;aes&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">aes</span>::{<span class="ident">block_cipher_trait</span>::<span class="ident">generic_array</span>::<span class="ident">typenum</span>::<span class="ident">U12</span>, <span class="ident">Aes128</span>, <span class="ident">Aes256</span>};
+<span class="kw">use</span> <span class="ident">aes</span>::{<span class="ident">block_cipher</span>::<span class="ident">generic_array</span>::<span class="ident">typenum</span>::<span class="ident">U12</span>, <span class="ident">Aes128</span>, <span class="ident">Aes256</span>};
 
 <span class="doccomment">/// Maximum length of associated data</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">A_MAX</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">36</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">A_MAX</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">36</span>;
 
 <span class="doccomment">/// Maximum length of plaintext</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">P_MAX</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">36</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">P_MAX</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">36</span>;
 
 <span class="doccomment">/// Maximum length of ciphertext</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">C_MAX</span>: <span class="ident">u64</span> <span class="op">=</span> (<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">36</span>) <span class="op">+</span> <span class="number">16</span>;
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">C_MAX</span>: <span class="ident">u64</span> <span class="op">=</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">36</span>) <span class="op">+</span> <span class="number">16</span>;
 
 <span class="doccomment">/// AES-GCM tags</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Tag</span> <span class="op">=</span> <span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">U16</span><span class="op">&gt;</span>;
@@ -481,7 +497,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AesGcm</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">B</span>: <span class="ident">BlockCipher</span><span class="op">&lt;</span><span class="ident">BlockSize</span> <span class="op">=</span> <span class="ident">U16</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">B</span>::<span class="ident">BlockSize</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 {
     <span class="doccomment">/// Encryption cipher</span>
@@ -496,30 +512,30 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="ident">NewAead</span> <span class="kw">for</span> <span class="ident">AesGcm</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">B</span>: <span class="ident">BlockCipher</span><span class="op">&lt;</span><span class="ident">BlockSize</span> <span class="op">=</span> <span class="ident">U16</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">B</span>::<span class="ident">BlockSize</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">B</span>: <span class="ident">BlockCipher</span><span class="op">&lt;</span><span class="ident">BlockSize</span> <span class="op">=</span> <span class="ident">U16</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">NewBlockCipher</span>,
+    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">KeySize</span> <span class="op">=</span> <span class="ident">B</span>::<span class="ident">KeySize</span>;
 
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="kw-2">mut</span> <span class="ident">key</span>: <span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">B</span>::<span class="ident">KeySize</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">cipher</span> <span class="op">=</span> <span class="ident">B</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>);
-        <span class="ident">key</span>.<span class="ident">as_mut_slice</span>().<span class="ident">zeroize</span>();
-        <span class="ident">cipher</span>.<span class="ident">into</span>()
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">Key</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">B</span>::<span class="ident">new</span>(<span class="ident">key</span>).<span class="ident">into</span>()
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AesGcm</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">B</span>: <span class="ident">BlockCipher</span><span class="op">&lt;</span><span class="ident">BlockSize</span> <span class="op">=</span> <span class="ident">U16</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">B</span>::<span class="ident">BlockSize</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">cipher</span>: <span class="ident">B</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">cipher</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ghash_key</span> <span class="op">=</span> <span class="ident">GenericArray</span>::<span class="ident">default</span>();
         <span class="ident">cipher</span>.<span class="ident">encrypt_block</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ghash_key</span>);
 
         <span class="kw">let</span> <span class="ident">ghash</span> <span class="op">=</span> <span class="ident">GHash</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">ghash_key</span>);
+
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;zeroize&quot;</span>)]</span>
         <span class="ident">ghash_key</span>.<span class="ident">zeroize</span>();
 
         <span class="self">Self</span> {
@@ -530,10 +546,10 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="ident">Aead</span> <span class="kw">for</span> <span class="ident">AesGcm</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="ident">AeadInPlace</span> <span class="kw">for</span> <span class="ident">AesGcm</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">B</span>: <span class="ident">BlockCipher</span><span class="op">&lt;</span><span class="ident">BlockSize</span> <span class="op">=</span> <span class="ident">U16</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">B</span>::<span class="ident">BlockSize</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">NonceSize</span> <span class="op">=</span> <span class="ident">N</span>;
@@ -545,8 +561,8 @@
         <span class="ident">nonce</span>: <span class="kw-2">&amp;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">N</span><span class="op">&gt;</span>,
         <span class="ident">associated_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
         <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Tag</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">buffer</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">&gt;</span> <span class="ident">P_MAX</span> <span class="op">||</span> <span class="ident">associated_data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">&gt;</span> <span class="ident">A_MAX</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Tag</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">buffer</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">&gt;</span> <span class="ident">P_MAX</span> <span class="op">|</span><span class="op">|</span> <span class="ident">associated_data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">&gt;</span> <span class="ident">A_MAX</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>);
         }
 
@@ -569,8 +585,8 @@
         <span class="ident">associated_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
         <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
         <span class="ident">tag</span>: <span class="kw-2">&amp;</span><span class="ident">Tag</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">buffer</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">&gt;</span> <span class="ident">C_MAX</span> <span class="op">||</span> <span class="ident">associated_data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">&gt;</span> <span class="ident">A_MAX</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">buffer</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">&gt;</span> <span class="ident">C_MAX</span> <span class="op">|</span><span class="op">|</span> <span class="ident">associated_data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span> <span class="op">&gt;</span> <span class="ident">A_MAX</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>);
         }
 
@@ -581,7 +597,7 @@
         <span class="ident">ctr</span>.<span class="ident">apply_keystream</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cipher</span>, <span class="ident">expected_tag</span>.<span class="ident">as_mut_slice</span>());
 
         <span class="kw">use</span> <span class="ident">subtle</span>::<span class="ident">ConstantTimeEq</span>;
-        <span class="kw">if</span> <span class="ident">expected_tag</span>.<span class="ident">ct_eq</span>(<span class="kw-2">&amp;</span><span class="ident">tag</span>).<span class="ident">unwrap_u8</span>() <span class="op">==</span> <span class="number">1</span> {
+        <span class="kw">if</span> <span class="ident">expected_tag</span>.<span class="ident">ct_eq</span>(<span class="kw-2">&amp;</span><span class="ident">tag</span>).<span class="ident">unwrap_u8</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
             <span class="ident">ctr</span>.<span class="ident">apply_keystream</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cipher</span>, <span class="ident">buffer</span>);
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else</span> {
@@ -593,7 +609,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="ident">AesGcm</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">N</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">B</span>: <span class="ident">BlockCipher</span><span class="op">&lt;</span><span class="ident">BlockSize</span> <span class="op">=</span> <span class="ident">U16</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">B</span>::<span class="ident">BlockSize</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">B</span>::<span class="ident">ParBlocks</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">N</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 {
     <span class="doccomment">/// Initialize counter mode.</span>
@@ -605,8 +621,8 @@
     <span class="doccomment">/// &gt; If len(IV)=96, then J0 = IV || 0{31} || 1.</span>
     <span class="doccomment">/// &gt; If len(IV) ≠ 96, then let s = 128 ⎡len(IV)/128⎤-len(IV), and</span>
     <span class="doccomment">/// &gt;     J0=GHASH(IV||0s+64||[len(IV)]64).</span>
-    <span class="kw">fn</span> <span class="ident">init_ctr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonce</span>: <span class="kw-2">&amp;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">N</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">Ctr32</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">j0</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">N</span>::<span class="ident">to_usize</span>() <span class="op">==</span> <span class="number">12</span> {
+    <span class="kw">fn</span> <span class="ident">init_ctr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonce</span>: <span class="kw-2">&amp;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">N</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ctr32</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">j0</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">N</span>::<span class="ident">to_usize</span>() <span class="op">=</span><span class="op">=</span> <span class="number">12</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">GenericArray</span>::<span class="ident">default</span>();
             <span class="ident">block</span>[..<span class="number">12</span>].<span class="ident">copy_from_slice</span>(<span class="ident">nonce</span>);
             <span class="ident">block</span>[<span class="number">15</span>] <span class="op">=</span> <span class="number">1</span>;
@@ -618,16 +634,16 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">GenericArray</span>::<span class="ident">default</span>();
             <span class="kw">let</span> <span class="ident">nonce_bits</span> <span class="op">=</span> (<span class="ident">N</span>::<span class="ident">to_usize</span>() <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">*</span> <span class="number">8</span>;
             <span class="ident">block</span>[<span class="number">8</span>..].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">nonce_bits</span>.<span class="ident">to_be_bytes</span>());
-            <span class="ident">ghash</span>.<span class="ident">update_block</span>(<span class="kw-2">&amp;</span><span class="ident">block</span>);
+            <span class="ident">ghash</span>.<span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="ident">block</span>);
 
-            <span class="ident">ghash</span>.<span class="ident">result</span>().<span class="ident">into_bytes</span>()
+            <span class="ident">ghash</span>.<span class="ident">finalize</span>().<span class="ident">into_bytes</span>()
         };
 
         <span class="ident">Ctr32</span>::<span class="ident">new</span>(<span class="ident">j0</span>)
     }
 
     <span class="doccomment">/// Authenticate the given plaintext and associated data using GHASH</span>
-    <span class="kw">fn</span> <span class="ident">compute_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">associated_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="ident">Tag</span> {
+    <span class="kw">fn</span> <span class="ident">compute_tag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">associated_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">buffer</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Tag</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ghash</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ghash</span>.<span class="ident">clone</span>();
         <span class="ident">ghash</span>.<span class="ident">update_padded</span>(<span class="ident">associated_data</span>);
         <span class="ident">ghash</span>.<span class="ident">update_padded</span>(<span class="ident">buffer</span>);
@@ -638,9 +654,9 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">GenericArray</span>::<span class="ident">default</span>();
         <span class="ident">block</span>[..<span class="number">8</span>].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">associated_data_bits</span>.<span class="ident">to_be_bytes</span>());
         <span class="ident">block</span>[<span class="number">8</span>..].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">buffer_bits</span>.<span class="ident">to_be_bytes</span>());
-        <span class="ident">ghash</span>.<span class="ident">update_block</span>(<span class="kw-2">&amp;</span><span class="ident">block</span>);
+        <span class="ident">ghash</span>.<span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="ident">block</span>);
 
-        <span class="ident">ghash</span>.<span class="ident">result</span>().<span class="ident">into_bytes</span>()
+        <span class="ident">ghash</span>.<span class="ident">finalize</span>().<span class="ident">into_bytes</span>()
     }
 }
 </pre></div>
