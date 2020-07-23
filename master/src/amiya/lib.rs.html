@@ -325,6 +325,16 @@
 <span id="325">325</span>
 <span id="326">326</span>
 <span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # Amiya</span>
 <span class="doccomment">//!</span>
@@ -454,14 +464,14 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// ### Request, Response and the process pipeline</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// For every Http Request comes to a Amiya server, the framework will create a Struct [`Request`] to</span>
-<span class="doccomment">/// represent it, It&#39;s **immutable** in the whole request process pipeline.</span>
+<span class="doccomment">/// For every HTTP request comes to a Amiya server, the framework will create a [`Request`] struct</span>
+<span class="doccomment">/// to represent it. It&#39;s immutable in the whole request process pipeline.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// And a [`Response`] is created at the same time. It&#39;s a normal `200 OK` empty header empty body</span>
 <span class="doccomment">/// response at first, but it&#39;s mutable and can be edit by middleware.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// After all middleware has been executed, the [`Response`] maybe edit by many middleware, and it&#39;s</span>
-<span class="doccomment">/// the final result we will send to the client.</span>
+<span class="doccomment">/// After all middleware has been executed, the [`Response`] maybe edited by many middleware, and</span>
+<span class="doccomment">/// as the final result we will send to the client.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ### [`Middleware`]</span>
 <span class="doccomment">///</span>
@@ -545,8 +555,16 @@
 <span class="doccomment">/// path then delegate the ctx to corresponding other middleware), a Logger or Time measurer (by</span>
 <span class="doccomment">/// print log before and after the [`next`] call), etc...</span>
 <span class="doccomment">///</span>
+<span class="doccomment">/// And a middleware does not have to call [`next`], and in that statution no inner middlewares will</span>
+<span class="doccomment">/// be executed, middleware like [`Router`] or login state checker can use this mechanism to make</span>
+<span class="doccomment">/// unprocessable requests responsed early.</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// You can create you own [`Middleware`] by implement the trait for your type, or using the [`m`]</span>
 <span class="doccomment">/// macro, see their document for detail.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ## Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// TODO: write a simple example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`Request`]: struct.Request.html</span>
 <span class="doccomment">/// [`Response`]: struct.Response.html</span>
@@ -554,7 +572,9 @@
 <span class="doccomment">/// [`Context`]: struct.Context.html</span>
 <span class="doccomment">/// [Koa]: https://github.com/koajs/koa</span>
 <span class="doccomment">/// [`next`]: struct.Context.html#method.next</span>
+<span class="doccomment">/// [`examples/middleware.rs`]: https://github.com/7sDream/amiya/blob/master/examples/middleware.rs</span>
 <span class="doccomment">/// [`Result`]: type.Result.html</span>
+<span class="doccomment">/// [`Router`]: middleware/struct.Router.html</span>
 <span class="doccomment">/// [`m`]: macro.m.html</span>
 <span class="doccomment">/// [img-onion-model]: https://rikka.7sdre.am/files/b1743b18-ba9f-4dc1-8c1d-15945978d0b1.png</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_debug_implementations</span>)]</span>
