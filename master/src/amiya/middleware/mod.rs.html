@@ -100,8 +100,24 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Middleware system implement and built-in middleware provided by amiya</span>
+<span class="doccomment">//! Built-in middleware</span>
 
 <span class="kw">mod</span> <span class="ident">router</span>;
 
@@ -115,24 +131,37 @@
 
 <span class="kw">type</span> <span class="ident">BoxedResultFut</span><span class="op">&lt;</span><span class="lifetime">&#39;x</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;x</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-<span class="doccomment">/// You can turn any type into a middleware by implement this trait.</span>
+<span class="doccomment">/// Use your custom type as a middleware by implement this trait.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// You need [`async_trait`] to implement this.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// See [`examples/measurer.rs`] for a example of process time usage measurer middleware.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`async_trait`]: https://github.com/dtolnay/async-trait</span>
+<span class="doccomment">/// [`examples/measurer.rs`]: https://github.com/7sDream/amiya/blob/master/examples/measurer.rs</span>
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Middleware</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
     <span class="doccomment">/// You middleware&#39;s handler function, it will be called when request reach this middleware</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ctx</span>: <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Ex</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
 }
 
-<span class="doccomment">/// A wrapper for middleware created by the `m` macro.</span>
+<span class="doccomment">/// The wrapper for use async function or closure as a middleware.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// **Do Not** use this type directly!</span>
+<span class="doccomment">/// This is the type when you use macro [`m`] , **Do Not** use this type directly!</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`m`]: ../macro.m.html</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_debug_implementations</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Custom</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// the code in macro `m`, converted to a boxed async func</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">M</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// the code in macro [`m`], converted to a boxed async func.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **Do Not** set this field by hand, use macro [`m`] instead!</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`m`]: ../macro.m.html</span>
     <span class="kw">pub</span> <span class="ident">func</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Fn</span>(<span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Ex</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BoxedResultFut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">async_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> <span class="ident">Middleware</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Custom</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> <span class="ident">Middleware</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">M</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">Ex</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
@@ -143,26 +172,29 @@
 
 <span class="doccomment">/// Writer middleware easily.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// `m` is a macro to let you easily write middleware use closure and syntax like Javascript&#39;s</span>
-<span class="doccomment">/// arrow function.</span>
+<span class="doccomment">/// It&#39;s a macro to let you easily write middleware use closure and syntax like Javascript&#39;s</span>
+<span class="doccomment">/// arrow function, or convert a async fn to a middleware use the `m!(async_func_name)` syntax.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// it can also convert a async fn to a middleware use the `m!(async_func_name)` syntax.</span>
+<span class="doccomment">/// It returns a [`M`] instance, which implement [`Middleware`] trait.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ## Example</span>
+<span class="doccomment">/// ## Examples</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// TODO: example</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`M`]: middleware/struct.M.html</span>
+<span class="doccomment">/// [`Middleware`]: middleware/trait.Middleware.html</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">m</span> {
     <span class="comment">// Convert a async function to middleware by func&#39;s name</span>
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>: <span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">middleware</span>::<span class="ident">Custom</span> { <span class="ident">func</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="op">|</span><span class="ident">ctx</span><span class="op">|</span> <span class="ident">Box</span>::<span class="ident">pin</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>(<span class="ident">ctx</span>))) }
+        <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">middleware</span>::<span class="ident">M</span> { <span class="ident">func</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="op">|</span><span class="ident">ctx</span><span class="op">|</span> <span class="ident">Box</span>::<span class="ident">pin</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>(<span class="ident">ctx</span>))) }
     };
 
     <span class="comment">// Convert a block</span>
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span>: <span class="ident">ident</span> : <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ex</span>: <span class="ident">ty</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span>: <span class="ident">block</span> ) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">middleware</span>::<span class="ident">Custom</span> {
+        <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">middleware</span>::<span class="ident">M</span> {
             <span class="ident">func</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="kw">move</span> <span class="op">|</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ctx</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ex</span><span class="op">&gt;</span><span class="op">|</span> {
                 <span class="ident">Box</span>::<span class="ident">pin</span>(<span class="kw">async</span> <span class="kw">move</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">body</span> })
             }),
