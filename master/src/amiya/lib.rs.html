@@ -335,16 +335,30 @@
 <span id="335">335</span>
 <span id="336">336</span>
 <span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! # Amiya</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! [![][doc-badge-img]][doc-gh-pages]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Amiya is a experimental middleware-based minimalism async HTTP server framework built up on the</span>
-<span class="doccomment">//! [`smol`] async runtime.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! I, a newbie to Rust&#39;s async world, start to write Amiya as a personal study project to learn</span>
-<span class="doccomment">//! async related concept and practice.</span>
+<span class="doccomment">//! Amiya is a **experimental** middleware-based minimalism async HTTP server framework built up on</span>
+<span class="doccomment">//! the [`smol`] async runtime.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! It&#39;s currently still working in progress and in a very early alpha stage.</span>
 <span class="doccomment">//!</span>
@@ -369,6 +383,112 @@
 <span class="doccomment">//! many heap alloc (Box) and Dynamic Dispatch (Trait Object) so there may be some performance loss</span>
 <span class="doccomment">//! compare to use `async-h1` directly.</span>
 <span class="doccomment">//!</span>
+<span class="doccomment">//! ## Concepts</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! To understand how this framework works, there are some concept need to be described first.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### Request, Response and the process pipeline</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! For every HTTP request comes to a Amiya server, the framework will create a [`Request`] struct</span>
+<span class="doccomment">//! to represent it. It&#39;s immutable in the whole request process pipeline.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! And a [`Response`] is created at the same time. It&#39;s a normal `200 OK` empty header empty body</span>
+<span class="doccomment">//! response at first, but it&#39;s mutable and can be edit by middleware.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! After all middleware has been executed, the [`Response`] maybe edited by many middleware, and</span>
+<span class="doccomment">//! as the final result we will send to the client.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### [`Middleware`]</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! For ease of understanding, you can think this word is a abbreviation of &quot;A function read</span>
+<span class="doccomment">//! some propety of [`Request`] and edit [`Response`]&quot; or, a request handler, for now.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### [`Context`]</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! But middleware do not works on [`Request`] and [`Response`] directly. [`Context`] wraps the</span>
+<span class="doccomment">//! immutable [`Request`] and editable [`Response`] with some other information and shortcut</span>
+<span class="doccomment">//! methods.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### Onion model</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The execution process of middleware uses the onion model:</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ![][img-onion-model]</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! *We reuse this famous picture from Nodejs&#39; [Koa] framework.*</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! If we add middleware A, B and C to Amiya server, the running order(if not interrupted in the</span>
+<span class="doccomment">//! middle) will be: A -&gt; B -&gt; C -&gt; C -&gt; B -&gt; A</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! So every middleware will be executed twice, but this does not mean same code is executed twice.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! That&#39;s why [`next`] method exists.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### [`next`]</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The most important method [`Context`] gives us is [`next`].</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! When a middleware calls `ctx.next().await`, the method will return after all inner middleware</span>
+<span class="doccomment">//! finish, or, some of them returns a Error.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! there is a simplest example:</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! use amiya::{Context, Result, m};</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! async fn A(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
+<span class="doccomment">//!     println!(&quot;A - before&quot;);</span>
+<span class="doccomment">//!     ctx.next().await?;</span>
+<span class="doccomment">//!     println!(&quot;A - out&quot;);</span>
+<span class="doccomment">//!     Ok(())</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! async fn B(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
+<span class="doccomment">//!     println!(&quot;B - before&quot;);</span>
+<span class="doccomment">//!     ctx.next().await?;</span>
+<span class="doccomment">//!     println!(&quot;B - out&quot;);</span>
+<span class="doccomment">//!     Ok(())</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! async fn C(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
+<span class="doccomment">//!     println!(&quot;C - before&quot;);</span>
+<span class="doccomment">//!     ctx.next().await?;</span>
+<span class="doccomment">//!     println!(&quot;C - out&quot;);</span>
+<span class="doccomment">//!     Ok(())</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! let amiya = amiya::new().uses(m!(A)).uses(m!(B)).uses(m!(C));</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! When a request in, the output will be:</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```console</span>
+<span class="doccomment">//! A - before</span>
+<span class="doccomment">//! B - before</span>
+<span class="doccomment">//! C - before</span>
+<span class="doccomment">//! C - after</span>
+<span class="doccomment">//! B - after</span>
+<span class="doccomment">//! A - after</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! You can referer to [`examples/middleware.rs`] for a more meaningful example.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### Middleware, the truth</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! So with the help of [`next`] method, a middleware can not only be a request handler, it can be:</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! - a error handler, by catpure inner middleware&#39;s return [`Result`])</span>
+<span class="doccomment">//! - a [`Router`], by looking the path then delegate the ctx to corresponding other middleware)</span>
+<span class="doccomment">//! - a Logger or time measurer, by print log before and after the [`next`] call)</span>
+<span class="doccomment">//! - etc...</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! A middleware even does not have to call [`next`], in that statution no inner middlewares will</span>
+<span class="doccomment">//! be executed. Middleware like [`Router`] or login state checker can use this mechanism to make</span>
+<span class="doccomment">//! unprocessable requests responsed early.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! You can create you own [`Middleware`] by implement the trait for your type, or using the [`m`]</span>
+<span class="doccomment">//! macro, see their document for detail.</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//! ## Examples</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! To start a very simple HTTP service that returns `Hello World` to the client in all paths:</span>
@@ -389,39 +509,22 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! You can await or block on this `fut` to start the service.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Notice any future need a async runtime to run, and that&#39;s not amiya&#39;s goal too. But you can</span>
-<span class="doccomment">//! refer to [`examples/hello.rs`] for a minimal example of how to start [`smol`] runtime.</span>
+<span class="doccomment">//! [`examples`] folder has more examples if you want to check.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! To run those examples, run</span>
+<span class="doccomment">//! [`Request`]: struct.Request.html</span>
+<span class="doccomment">//! [`Response`]: struct.Response.html</span>
+<span class="doccomment">//! [`Middleware`]: middleware/trait.Middleware.html</span>
+<span class="doccomment">//! [`Context`]: struct.Context.html</span>
+<span class="doccomment">//! [`next`]: struct.Context.html#method.next</span>
+<span class="doccomment">//! [`Result`]: type.Result.html</span>
+<span class="doccomment">//! [`Router`]: middleware/struct.Router.html</span>
+<span class="doccomment">//! [`m`]: macro.m.html</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```bash</span>
-<span class="doccomment">//! $ cargo run --example # show example list</span>
-<span class="doccomment">//! $ cargo run --example hello # run hello</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! [Document of Amiya struct][doc-struct-Amiya] has some brief description of concept you need to</span>
-<span class="doccomment">//! understand before use it, you can check/run other examples after read it:</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! - Understand onion model of Amiya&#39;s middleware system: [`examples/middleware.rs`]</span>
-<span class="doccomment">//! - How to store extra data in context: [`examples/extra.rs`]</span>
-<span class="doccomment">//! - Use `Router` middleware for request diversion: [`examples/router.rs`]</span>
-<span class="doccomment">//! - Use another Amiya service as a middleware: [`examples/subapp.rs`]</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## License</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! BSD 3-Clause Clear License, See [`LICENSE`].</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! [doc-badge-img]: https://img.shields.io/badge/docs-on_github_pages-success?style=flat-square&amp;logo=read-the-docs</span>
-<span class="doccomment">//! [doc-gh-pages]: https://7sdream.github.io/amiya/master/amiya</span>
 <span class="doccomment">//! [`smol`]: https://github.com/stjepang/smol</span>
 <span class="doccomment">//! [`async-h1`]: https://github.com/http-rs/async-h1</span>
-<span class="doccomment">//! [doc-struct-Amiya]: struct.Amiya.html</span>
-<span class="doccomment">//! [`examples/hello.rs`]: https://github.com/7sDream/amiya/blob/master/examples/hello.rs</span>
-<span class="doccomment">//! [`examples/middleware.rs`]: https://github.com/7sDream/amiya/blob/master/examples/middleware.rs</span>
-<span class="doccomment">//! [`examples/extra.rs`]: https://github.com/7sDream/amiya/blob/master/examples/extra.rs</span>
-<span class="doccomment">//! [`examples/router.rs`]: https://github.com/7sDream/amiya/blob/master/examples/router.rs</span>
-<span class="doccomment">//! [`examples/subapp.rs`]: https://github.com/7sDream/amiya/blob/master/examples/subapp.rs</span>
-<span class="doccomment">//! [`LICENSE`]: https://github.com/7sDream/amiya/blob/master/LICENSE</span>
+<span class="doccomment">//! [img-onion-model]: https://rikka.7sdre.am/files/b1743b18-ba9f-4dc1-8c1d-15945978d0b1.png</span>
+<span class="doccomment">//! [Koa]: https://github.com/koajs/koa</span>
+<span class="doccomment">//! [`examples`]: https://github.com/7sDream/amiya/blob/master/examples</span>
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">warnings</span>)]</span>
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy</span>::<span class="ident">all</span>, <span class="ident">clippy</span>::<span class="ident">pedantic</span>, <span class="ident">clippy</span>::<span class="ident">nursery</span>)]</span>
@@ -449,134 +552,27 @@
 
 <span class="kw">type</span> <span class="ident">MiddlewareList</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Middleware</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-<span class="doccomment">/// Create a [`Amiya`] instance</span>
+<span class="doccomment">/// Create a [`Amiya`] instance with extra data type `()`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`Amiya`]: struct.Amiya.html</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Amiya</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Amiya</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="ident">Amiya</span>::<span class="ident">default</span>()
 }
 
-<span class="doccomment">/// Amiya Http Server.</span>
+<span class="doccomment">/// Create a [`Amiya`] instance with user defined extra data.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// For understand how this framework works, there are some concept need to be described first.</span>
+<span class="doccomment">/// [`Amiya`]: struct.Amiya.html</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_ex</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Amiya</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> {
+    <span class="ident">Amiya</span>::<span class="ident">default</span>()
+}
+
+<span class="doccomment">/// Amiya HTTP Server.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ## Concepts</span>
+<span class="doccomment">/// Amiya itself also implement the [`Middleware`] trait and can be added to another Amiya</span>
+<span class="doccomment">/// instance, see [`examples/subapp.rs`] for a example.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ### Request, Response and the process pipeline</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// For every HTTP request comes to a Amiya server, the framework will create a [`Request`] struct</span>
-<span class="doccomment">/// to represent it. It&#39;s immutable in the whole request process pipeline.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// And a [`Response`] is created at the same time. It&#39;s a normal `200 OK` empty header empty body</span>
-<span class="doccomment">/// response at first, but it&#39;s mutable and can be edit by middleware.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// After all middleware has been executed, the [`Response`] maybe edited by many middleware, and</span>
-<span class="doccomment">/// as the final result we will send to the client.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### [`Middleware`]</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// For ease of understanding, you can think this word is a abbreviation of &quot;A function read</span>
-<span class="doccomment">/// some propety of [`Request`] and edit [`Response`]&quot; or, a Request Handler, for now.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### [`Context`]</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// But middleware do not works on [`Request`] and [`Response`] directly. [`Context`] wraps the</span>
-<span class="doccomment">/// immutable [`Request`] and editable [`Response`] with some other information and shortcuts</span>
-<span class="doccomment">/// method.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Onion model</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Middleware is controlled by a system using the onion model.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ![][img-onion-model]</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// *We reuse this famous picture from Nodejs&#39; [Koa] framework.*</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If we add middleware A, B and C to Amiya server, the running order will be(in normal</span>
-<span class="doccomment">/// condition): A -&gt; B -&gt; C -&gt; C -&gt; B -&gt; A</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// So every middleware will be executed twice, but this not mean same code executed twice.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// That&#39;s why [`next`] method exists.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### [`next`]</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The most important method [`Context`] given is [`next`].</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When a middleware calls `ctx.next().await`, the method will return after all inner middleware</span>
-<span class="doccomment">/// finish.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// there is a simplest example:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// use amiya::{Context, Result, m};</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// async fn A(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
-<span class="doccomment">///     println!(&quot;A - before&quot;);</span>
-<span class="doccomment">///     ctx.next().await?;</span>
-<span class="doccomment">///     println!(&quot;A - out&quot;);</span>
-<span class="doccomment">///     Ok(())</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// async fn B(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
-<span class="doccomment">///     println!(&quot;B - before&quot;);</span>
-<span class="doccomment">///     ctx.next().await?;</span>
-<span class="doccomment">///     println!(&quot;B - out&quot;);</span>
-<span class="doccomment">///     Ok(())</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// async fn C(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
-<span class="doccomment">///     println!(&quot;C - before&quot;);</span>
-<span class="doccomment">///     ctx.next().await?;</span>
-<span class="doccomment">///     println!(&quot;C - out&quot;);</span>
-<span class="doccomment">///     Ok(())</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let amiya = amiya::new().uses(m!(A)).uses(m!(B)).uses(m!(C));</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When a request in, the output will be:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```console</span>
-<span class="doccomment">/// A - before</span>
-<span class="doccomment">/// B - before</span>
-<span class="doccomment">/// C - before</span>
-<span class="doccomment">/// C - after</span>
-<span class="doccomment">/// B - after</span>
-<span class="doccomment">/// A - after</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// You can referer to [`examples/middleware.rs`] for a more meaningful example.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Middleware 2</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// So with the help of [`next`] method, a middleware can not noly be a request handler, it can be a</span>
-<span class="doccomment">/// error handler(by catpure inner middleware&#39;s return [`Result`]), a [`Router`] (by looking the</span>
-<span class="doccomment">/// path then delegate the ctx to corresponding other middleware), a Logger or Time measurer (by</span>
-<span class="doccomment">/// print log before and after the [`next`] call), etc...</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// And a middleware does not have to call [`next`], and in that statution no inner middlewares will</span>
-<span class="doccomment">/// be executed, middleware like [`Router`] or login state checker can use this mechanism to make</span>
-<span class="doccomment">/// unprocessable requests responsed early.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// You can create you own [`Middleware`] by implement the trait for your type, or using the [`m`]</span>
-<span class="doccomment">/// macro, see their document for detail.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ## Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// TODO: write a simple example</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`Request`]: struct.Request.html</span>
-<span class="doccomment">/// [`Response`]: struct.Response.html</span>
 <span class="doccomment">/// [`Middleware`]: middleware/trait.Middleware.html</span>
-<span class="doccomment">/// [`Context`]: struct.Context.html</span>
-<span class="doccomment">/// [Koa]: https://github.com/koajs/koa</span>
-<span class="doccomment">/// [`next`]: struct.Context.html#method.next</span>
-<span class="doccomment">/// [`examples/middleware.rs`]: https://github.com/7sDream/amiya/blob/master/examples/middleware.rs</span>
-<span class="doccomment">/// [`Result`]: type.Result.html</span>
-<span class="doccomment">/// [`Router`]: middleware/struct.Router.html</span>
-<span class="doccomment">/// [`m`]: macro.m.html</span>
-<span class="doccomment">/// [img-onion-model]: https://rikka.7sdre.am/files/b1743b18-ba9f-4dc1-8c1d-15945978d0b1.png</span>
+<span class="doccomment">/// [`examples/subapp.rs`]: https://github.com/7sDream/amiya/blob/master/examples/subapp.rs</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_debug_implementations</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Amiya</span><span class="op">&lt;</span><span class="ident">Ex</span> <span class="op">=</span> ()<span class="op">&gt;</span> {
     <span class="ident">middleware_list</span>: <span class="ident">MiddlewareList</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span>,
@@ -589,7 +585,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> <span class="ident">Amiya</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a [`Amiya`] instance</span>
+    <span class="doccomment">/// Create a [`Amiya`] instance.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Amiya`]: struct.Amiya</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -601,9 +597,28 @@
 <span class="kw">where</span>
     <span class="ident">Ex</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="doccomment">/// Add a middleware to the end, you can create middleware by</span>
-    <span class="doccomment">/// implement the [`Middleware`] trait for your custom type or use the</span>
-    <span class="doccomment">/// [`m`] macro to convert a async func or closure.</span>
+    <span class="doccomment">/// Add a middleware to the end, middleware will be executed as the order of be added.  </span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// You can create middleware by implement the [`Middleware`] trait</span>
+    <span class="doccomment">/// for your custom type or use the [`m`] macro to convert a async func or closure.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// use amiya::m;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// amiya::new().uses(m!(ctx =&gt; ctx.next().await));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// use amiya::{m, middleware::router};</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let router = router().endpoint().get(m!(</span>
+    <span class="doccomment">///     ctx =&gt; ctx.resp.set_body(&quot;Hello world!&quot;);</span>
+    <span class="doccomment">/// ));</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// amiya::new().uses(router);</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Middleware`]: middleware/trait.Middleware.html</span>
     <span class="doccomment">/// [`m`]: macro.m.html</span>
@@ -625,13 +640,40 @@
             <span class="ident">resp</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">resp</span>,
             <span class="ident">ex</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ex</span>,
             <span class="ident">tail</span>: <span class="kw-2">&amp;</span><span class="ident">tail</span>,
-            <span class="ident">remain_path</span>: <span class="kw-2">&amp;</span><span class="ident">req</span>.<span class="ident">url</span>().<span class="ident">path</span>()[<span class="number">1</span>..],
+            <span class="ident">remain_path</span>: <span class="ident">req</span>.<span class="ident">url</span>().<span class="ident">path</span>(),
         };
         <span class="ident">ctx</span>.<span class="ident">next</span>().<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">resp</span>)
     }
 
-    <span class="doccomment">/// Start Amiya app on `addr`</span>
+    <span class="doccomment">/// Run Amiya server on given `addr`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// amiya::new().listen(&quot;127.0.0.1:8080&quot;);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// amiya::new().listen((&quot;127.0.0.1&quot;, 8080));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// use std::net::Ipv4Addr;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// amiya::new().listen((Ipv4Addr::new(127, 0, 0, 1), 8080));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// use std::net::{SocketAddrV4, Ipv4Addr};</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let socket = SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), 8080);</span>
+    <span class="doccomment">/// amiya::new().listen(socket);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// amiya::new().listen(&quot;[::]:8080&quot;);</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">listen</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">AsyncToSocketAddrs</span> <span class="op">+</span> <span class="ident">Debug</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">listener</span> <span class="op">=</span> <span class="ident">TcpListener</span>::<span class="ident">bind</span>(<span class="ident">addr</span>).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">middleware_list</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">middleware_list</span>);
@@ -667,7 +709,7 @@
             <span class="ident">resp</span>: <span class="ident">ctx</span>.<span class="ident">resp</span>,
             <span class="ident">ex</span>: <span class="ident">ctx</span>.<span class="ident">ex</span>,
             <span class="ident">tail</span>: <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">middleware_list</span>[..],
-            <span class="ident">remain_path</span>: <span class="kw-2">&amp;</span><span class="ident">ctx</span>.<span class="ident">remain_path</span>,
+            <span class="ident">remain_path</span>: <span class="ident">ctx</span>.<span class="ident">remain_path</span>,
         };
         <span class="ident">self_ctx</span>.<span class="ident">next</span>().<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="ident">ctx</span>.<span class="ident">next</span>().<span class="kw">await</span>

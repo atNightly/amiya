@@ -54,13 +54,15 @@
 <span id="54">54</span>
 <span id="55">55</span>
 <span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> {
     <span class="kw">crate</span>::{<span class="ident">middleware</span>::<span class="ident">Middleware</span>, <span class="ident">Request</span>, <span class="ident">Response</span>, <span class="prelude-ty">Result</span>},
     <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>,
 };
 
-<span class="doccomment">/// The context a middleware will works on</span>
+<span class="doccomment">/// The context middleware works on</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_debug_implementations</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;x</span>, <span class="ident">Ex</span><span class="op">&gt;</span> {
     <span class="doccomment">/// The incoming http request</span>
@@ -77,12 +79,13 @@
 <span class="kw">where</span>
     <span class="ident">Ex</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="doccomment">/// Run all inner middleware, it drives the middleware system.</span>
+    <span class="doccomment">/// Run all inner middleware, this method drives the middleware system.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Notice that you are **not must** call this func in all middleware. if you do not call it</span>
     <span class="doccomment">/// inner middleware will simply not be executed.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// A second call to this func do nothing and return&#39;s a `Ok(())`.</span>
+    <span class="doccomment">/// A second call to this method on the same instance will do nothing and directly returns a</span>
+    <span class="doccomment">/// `Ok(())`.</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">current</span>, <span class="ident">tail</span>)) <span class="op">=</span> <span class="self">self</span>.<span class="ident">tail</span>.<span class="ident">split_first</span>() {
             <span class="self">self</span>.<span class="ident">tail</span> <span class="op">=</span> <span class="ident">tail</span>;
@@ -104,9 +107,10 @@
     <span class="doccomment">/// It&#39;s differ from `Context.req.url().path()`, path returned by this method will only contains</span>
     <span class="doccomment">/// sub paths that haven&#39;t matched by any [`Router`] middleware.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// TODO: a example</span>
+    <span class="doccomment">/// See [`examples/router.rs`] for a example.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Router`]: middleware/struct.Router.html</span>
+    <span class="doccomment">/// [`examples/router.rs`]: https://github.com/7sDream/amiya/blob/master/examples/router.rs</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="self">self</span>.<span class="ident">remain_path</span>
     }
