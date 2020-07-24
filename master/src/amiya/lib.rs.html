@@ -356,6 +356,8 @@
 <span id="356">356</span>
 <span id="357">357</span>
 <span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Amiya is a **experimental** middleware-based minimalism async HTTP server framework built up on</span>
 <span class="doccomment">//! the [`smol`] async runtime.</span>
@@ -377,7 +379,7 @@
 <span class="doccomment">//! HTTP framework for myself to write simple web services.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Amiya uses [`async-h1`] to parse and process requests, so only HTTP version 1.1 is supported for</span>
-<span class="doccomment">//! now. HTTP 2.0 is not in goal list, at least in the near future.</span>
+<span class="doccomment">//! now. HTTP 1.0 or 2.0 is not in goal list, at least in the near future.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Performance is **NOT** in the list too, after all, Amiya is just a experimental for now, it uses</span>
 <span class="doccomment">//! many heap alloc (Box) and Dynamic Dispatch (Trait Object) so there may be some performance loss</span>
@@ -436,28 +438,28 @@
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//! use amiya::{Context, Result, m};</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! async fn A(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
+<span class="doccomment">//! async fn a(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
 <span class="doccomment">//!     println!(&quot;A - before&quot;);</span>
 <span class="doccomment">//!     ctx.next().await?;</span>
 <span class="doccomment">//!     println!(&quot;A - out&quot;);</span>
 <span class="doccomment">//!     Ok(())</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! async fn B(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
+<span class="doccomment">//! async fn b(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
 <span class="doccomment">//!     println!(&quot;B - before&quot;);</span>
 <span class="doccomment">//!     ctx.next().await?;</span>
 <span class="doccomment">//!     println!(&quot;B - out&quot;);</span>
 <span class="doccomment">//!     Ok(())</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! async fn C(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
+<span class="doccomment">//! async fn c(mut ctx: Context&lt;&#39;_, ()&gt;) -&gt; Result {</span>
 <span class="doccomment">//!     println!(&quot;C - before&quot;);</span>
 <span class="doccomment">//!     ctx.next().await?;</span>
 <span class="doccomment">//!     println!(&quot;C - out&quot;);</span>
 <span class="doccomment">//!     Ok(())</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! let amiya = amiya::new().uses(m!(A)).uses(m!(B)).uses(m!(C));</span>
+<span class="doccomment">//! let amiya = amiya::new().uses(m!(a)).uses(m!(b)).uses(m!(c));</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! When a request in, the output will be:</span>
@@ -712,6 +714,8 @@
             <span class="ident">remain_path</span>: <span class="ident">ctx</span>.<span class="ident">remain_path</span>,
         };
         <span class="ident">self_ctx</span>.<span class="ident">next</span>().<span class="kw">await</span><span class="question-mark">?</span>;
+
+        <span class="comment">// TODO: Do we need this? A service must be a endpoint, isn&#39;t it? TBD</span>
         <span class="ident">ctx</span>.<span class="ident">next</span>().<span class="kw">await</span>
     }
 }
