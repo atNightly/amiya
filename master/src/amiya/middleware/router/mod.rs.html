@@ -143,6 +143,7 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
+<span id="146">146</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> {
     <span class="kw">super</span>::<span class="ident">Middleware</span>,
@@ -169,7 +170,7 @@
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_router_like_pub_fn</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ex</span>: <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="doccomment">/// Enter endpoint edit environment</span>
+        <span class="doccomment">/// Enter endpoint edit environment.</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">endpoint</span>(
             <span class="self">self</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">middleware</span>::<span class="ident">router</span>::<span class="ident">setter</span>::<span class="ident">RouterSetter</span><span class="op">&lt;</span>
@@ -180,7 +181,8 @@
             <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">middleware</span>::<span class="ident">router</span>::<span class="ident">setter</span>::<span class="ident">RouterSetter</span>::<span class="ident">new_endpoint_setter</span>(<span class="self">self</span>)
         }
 
-        <span class="doccomment">/// Enter **endpoint** edit environment for router table&#39;s `path` item</span>
+        <span class="doccomment">/// Add a new item for `path` to router table and enter endpoint edit environment of</span>
+        <span class="doccomment">/// that item.</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">at</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(
             <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">middleware</span>::<span class="ident">router</span>::<span class="ident">setter</span>::<span class="ident">RouterSetter</span><span class="op">&lt;</span>
@@ -196,7 +198,7 @@
                 .<span class="ident">endpoint</span>()
         }
 
-        <span class="doccomment">/// Enter fallback edit environment</span>
+        <span class="doccomment">/// Enter fallback edit environment.</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fallback</span>(
             <span class="self">self</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">middleware</span>::<span class="ident">router</span>::<span class="ident">setter</span>::<span class="ident">RouterSetter</span><span class="op">&lt;</span>
@@ -209,7 +211,7 @@
     };
 }
 
-<span class="doccomment">/// Router middleware for request diversion</span>
+<span class="doccomment">/// The middleware for request diversion by path.</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_debug_implementations</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Router</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> {
     <span class="ident">endpoint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Middleware</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
@@ -240,7 +242,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> <span class="ident">Router</span><span class="op">&lt;</span><span class="ident">Ex</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create new Router middleware</span>
+    <span class="doccomment">/// Create new Router middleware.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">default</span>()
     }
