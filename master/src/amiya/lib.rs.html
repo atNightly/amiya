@@ -361,6 +361,8 @@
 <span id="361">361</span>
 <span id="362">362</span>
 <span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Amiya is a **experimental** middleware-based minimalism async HTTP server framework built up on</span>
 <span class="doccomment">//! the [`smol`] async runtime.</span>
@@ -484,7 +486,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! - a error handler, by catpure inner middleware&#39;s return [`Result`])</span>
 <span class="doccomment">//! - a [`Router`], by looking the path then delegate the ctx to corresponding other middleware)</span>
-<span class="doccomment">//! - a Logger or time measurer, by print log before and after the [`next`] call)</span>
+<span class="doccomment">//! - a Logger or [time measurer], by print log before and after the [`next`] call)</span>
 <span class="doccomment">//! - etc...</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! A middleware even does not have to call [`next`], in that statution no inner middlewares will</span>
@@ -529,6 +531,8 @@
 <span class="doccomment">//! [`async-h1`]: https://github.com/http-rs/async-h1</span>
 <span class="doccomment">//! [img-onion-model]: https://rikka.7sdre.am/files/774eff6f-9368-48d6-8bd2-1b547a74bc23.jpeg</span>
 <span class="doccomment">//! [Koa]: https://github.com/koajs/koa</span>
+<span class="doccomment">//! [`examples/middleware.rs`]: https://github.com/7sDream/amiya/blob/master/examples/middleware.rs</span>
+<span class="doccomment">//! [time measurer]: https://github.com/7sDream/amiya/blob/master/examples/measurer.rs</span>
 <span class="doccomment">//! [`examples`]: https://github.com/7sDream/amiya/blob/master/examples</span>
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">warnings</span>)]</span>
