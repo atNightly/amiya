@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/blocking-0.4.7/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../blocking/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/blocking-0.5.0/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../blocking/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1191,271 +1191,12 @@
 <span id="1191">1191</span>
 <span id="1192">1192</span>
 <span id="1193">1193</span>
-<span id="1194">1194</span>
-<span id="1195">1195</span>
-<span id="1196">1196</span>
-<span id="1197">1197</span>
-<span id="1198">1198</span>
-<span id="1199">1199</span>
-<span id="1200">1200</span>
-<span id="1201">1201</span>
-<span id="1202">1202</span>
-<span id="1203">1203</span>
-<span id="1204">1204</span>
-<span id="1205">1205</span>
-<span id="1206">1206</span>
-<span id="1207">1207</span>
-<span id="1208">1208</span>
-<span id="1209">1209</span>
-<span id="1210">1210</span>
-<span id="1211">1211</span>
-<span id="1212">1212</span>
-<span id="1213">1213</span>
-<span id="1214">1214</span>
-<span id="1215">1215</span>
-<span id="1216">1216</span>
-<span id="1217">1217</span>
-<span id="1218">1218</span>
-<span id="1219">1219</span>
-<span id="1220">1220</span>
-<span id="1221">1221</span>
-<span id="1222">1222</span>
-<span id="1223">1223</span>
-<span id="1224">1224</span>
-<span id="1225">1225</span>
-<span id="1226">1226</span>
-<span id="1227">1227</span>
-<span id="1228">1228</span>
-<span id="1229">1229</span>
-<span id="1230">1230</span>
-<span id="1231">1231</span>
-<span id="1232">1232</span>
-<span id="1233">1233</span>
-<span id="1234">1234</span>
-<span id="1235">1235</span>
-<span id="1236">1236</span>
-<span id="1237">1237</span>
-<span id="1238">1238</span>
-<span id="1239">1239</span>
-<span id="1240">1240</span>
-<span id="1241">1241</span>
-<span id="1242">1242</span>
-<span id="1243">1243</span>
-<span id="1244">1244</span>
-<span id="1245">1245</span>
-<span id="1246">1246</span>
-<span id="1247">1247</span>
-<span id="1248">1248</span>
-<span id="1249">1249</span>
-<span id="1250">1250</span>
-<span id="1251">1251</span>
-<span id="1252">1252</span>
-<span id="1253">1253</span>
-<span id="1254">1254</span>
-<span id="1255">1255</span>
-<span id="1256">1256</span>
-<span id="1257">1257</span>
-<span id="1258">1258</span>
-<span id="1259">1259</span>
-<span id="1260">1260</span>
-<span id="1261">1261</span>
-<span id="1262">1262</span>
-<span id="1263">1263</span>
-<span id="1264">1264</span>
-<span id="1265">1265</span>
-<span id="1266">1266</span>
-<span id="1267">1267</span>
-<span id="1268">1268</span>
-<span id="1269">1269</span>
-<span id="1270">1270</span>
-<span id="1271">1271</span>
-<span id="1272">1272</span>
-<span id="1273">1273</span>
-<span id="1274">1274</span>
-<span id="1275">1275</span>
-<span id="1276">1276</span>
-<span id="1277">1277</span>
-<span id="1278">1278</span>
-<span id="1279">1279</span>
-<span id="1280">1280</span>
-<span id="1281">1281</span>
-<span id="1282">1282</span>
-<span id="1283">1283</span>
-<span id="1284">1284</span>
-<span id="1285">1285</span>
-<span id="1286">1286</span>
-<span id="1287">1287</span>
-<span id="1288">1288</span>
-<span id="1289">1289</span>
-<span id="1290">1290</span>
-<span id="1291">1291</span>
-<span id="1292">1292</span>
-<span id="1293">1293</span>
-<span id="1294">1294</span>
-<span id="1295">1295</span>
-<span id="1296">1296</span>
-<span id="1297">1297</span>
-<span id="1298">1298</span>
-<span id="1299">1299</span>
-<span id="1300">1300</span>
-<span id="1301">1301</span>
-<span id="1302">1302</span>
-<span id="1303">1303</span>
-<span id="1304">1304</span>
-<span id="1305">1305</span>
-<span id="1306">1306</span>
-<span id="1307">1307</span>
-<span id="1308">1308</span>
-<span id="1309">1309</span>
-<span id="1310">1310</span>
-<span id="1311">1311</span>
-<span id="1312">1312</span>
-<span id="1313">1313</span>
-<span id="1314">1314</span>
-<span id="1315">1315</span>
-<span id="1316">1316</span>
-<span id="1317">1317</span>
-<span id="1318">1318</span>
-<span id="1319">1319</span>
-<span id="1320">1320</span>
-<span id="1321">1321</span>
-<span id="1322">1322</span>
-<span id="1323">1323</span>
-<span id="1324">1324</span>
-<span id="1325">1325</span>
-<span id="1326">1326</span>
-<span id="1327">1327</span>
-<span id="1328">1328</span>
-<span id="1329">1329</span>
-<span id="1330">1330</span>
-<span id="1331">1331</span>
-<span id="1332">1332</span>
-<span id="1333">1333</span>
-<span id="1334">1334</span>
-<span id="1335">1335</span>
-<span id="1336">1336</span>
-<span id="1337">1337</span>
-<span id="1338">1338</span>
-<span id="1339">1339</span>
-<span id="1340">1340</span>
-<span id="1341">1341</span>
-<span id="1342">1342</span>
-<span id="1343">1343</span>
-<span id="1344">1344</span>
-<span id="1345">1345</span>
-<span id="1346">1346</span>
-<span id="1347">1347</span>
-<span id="1348">1348</span>
-<span id="1349">1349</span>
-<span id="1350">1350</span>
-<span id="1351">1351</span>
-<span id="1352">1352</span>
-<span id="1353">1353</span>
-<span id="1354">1354</span>
-<span id="1355">1355</span>
-<span id="1356">1356</span>
-<span id="1357">1357</span>
-<span id="1358">1358</span>
-<span id="1359">1359</span>
-<span id="1360">1360</span>
-<span id="1361">1361</span>
-<span id="1362">1362</span>
-<span id="1363">1363</span>
-<span id="1364">1364</span>
-<span id="1365">1365</span>
-<span id="1366">1366</span>
-<span id="1367">1367</span>
-<span id="1368">1368</span>
-<span id="1369">1369</span>
-<span id="1370">1370</span>
-<span id="1371">1371</span>
-<span id="1372">1372</span>
-<span id="1373">1373</span>
-<span id="1374">1374</span>
-<span id="1375">1375</span>
-<span id="1376">1376</span>
-<span id="1377">1377</span>
-<span id="1378">1378</span>
-<span id="1379">1379</span>
-<span id="1380">1380</span>
-<span id="1381">1381</span>
-<span id="1382">1382</span>
-<span id="1383">1383</span>
-<span id="1384">1384</span>
-<span id="1385">1385</span>
-<span id="1386">1386</span>
-<span id="1387">1387</span>
-<span id="1388">1388</span>
-<span id="1389">1389</span>
-<span id="1390">1390</span>
-<span id="1391">1391</span>
-<span id="1392">1392</span>
-<span id="1393">1393</span>
-<span id="1394">1394</span>
-<span id="1395">1395</span>
-<span id="1396">1396</span>
-<span id="1397">1397</span>
-<span id="1398">1398</span>
-<span id="1399">1399</span>
-<span id="1400">1400</span>
-<span id="1401">1401</span>
-<span id="1402">1402</span>
-<span id="1403">1403</span>
-<span id="1404">1404</span>
-<span id="1405">1405</span>
-<span id="1406">1406</span>
-<span id="1407">1407</span>
-<span id="1408">1408</span>
-<span id="1409">1409</span>
-<span id="1410">1410</span>
-<span id="1411">1411</span>
-<span id="1412">1412</span>
-<span id="1413">1413</span>
-<span id="1414">1414</span>
-<span id="1415">1415</span>
-<span id="1416">1416</span>
-<span id="1417">1417</span>
-<span id="1418">1418</span>
-<span id="1419">1419</span>
-<span id="1420">1420</span>
-<span id="1421">1421</span>
-<span id="1422">1422</span>
-<span id="1423">1423</span>
-<span id="1424">1424</span>
-<span id="1425">1425</span>
-<span id="1426">1426</span>
-<span id="1427">1427</span>
-<span id="1428">1428</span>
-<span id="1429">1429</span>
-<span id="1430">1430</span>
-<span id="1431">1431</span>
-<span id="1432">1432</span>
-<span id="1433">1433</span>
-<span id="1434">1434</span>
-<span id="1435">1435</span>
-<span id="1436">1436</span>
-<span id="1437">1437</span>
-<span id="1438">1438</span>
-<span id="1439">1439</span>
-<span id="1440">1440</span>
-<span id="1441">1441</span>
-<span id="1442">1442</span>
-<span id="1443">1443</span>
-<span id="1444">1444</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Block on async code or await blocking code.</span>
+<span class="doccomment">//! A thread pool for isolating blocking I/O in async programs.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! To convert async to blocking, *block on* async code with [`block_on()`], [`block_on!`], or</span>
-<span class="doccomment">//! [`BlockOn`].</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! To convert blocking to async, *unblock* blocking code with [`unblock()`], [`unblock!`], or</span>
-<span class="doccomment">//! [`Unblock`].</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! # Thread pool</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Sometimes there&#39;s no way to avoid blocking I/O in async programs. Consider files or stdin,</span>
-<span class="doccomment">//! which have weak async support on modern operating systems. While [IOCP], [AIO], and [io_uring]</span>
-<span class="doccomment">//! are possible solutions, they&#39;re not always available or ideal.</span>
+<span class="doccomment">//! Sometimes there&#39;s no way to avoid blocking I/O. Consider files or stdin, which have weak async</span>
+<span class="doccomment">//! support on modern operating systems. While [IOCP], [AIO], and [io_uring] are possible</span>
+<span class="doccomment">//! solutions, they&#39;re not always available or ideal.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Since blocking is not allowed inside futures, we must move blocking I/O onto a special thread</span>
 <span class="doccomment">//! pool provided by this crate. The pool dynamically spawns and stops threads depending on the</span>
@@ -1467,73 +1208,67 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [IOCP]: https://en.wikipedia.org/wiki/Input/output_completion_port</span>
 <span class="doccomment">//! [AIO]: http://man7.org/linux/man-pages/man2/io_submit.2.html</span>
-<span class="doccomment">//! [io_uring]: https://lwn.net/Articles/776703/</span>
+<span class="doccomment">//! [io_uring]: https://lwn.net/Articles/776703</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Examples</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Await a blocking file read with [`unblock!`]:</span>
+<span class="doccomment">//! Read the contents of a file:</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```no_run</span>
-<span class="doccomment">//! use blocking::{block_on, unblock};</span>
+<span class="doccomment">//! use blocking::unblock;</span>
 <span class="doccomment">//! use futures_lite::*;</span>
 <span class="doccomment">//! use std::fs;</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! block_on(async {</span>
-<span class="doccomment">//!     let contents = unblock!(fs::read_to_string(&quot;file.txt&quot;))?;</span>
-<span class="doccomment">//!     println!(&quot;{}&quot;, contents);</span>
-<span class="doccomment">//!     io::Result::Ok(())</span>
-<span class="doccomment">//! });</span>
+<span class="doccomment">//! # future::block_on(async {</span>
+<span class="doccomment">//! let contents = unblock!(fs::read_to_string(&quot;file.txt&quot;))?;</span>
+<span class="doccomment">//! println!(&quot;{}&quot;, contents);</span>
+<span class="doccomment">//! # io::Result::Ok(()) });</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Read a file and pipe its contents to stdout:</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```no_run</span>
-<span class="doccomment">//! use blocking::{block_on, Unblock};</span>
+<span class="doccomment">//! use blocking::Unblock;</span>
 <span class="doccomment">//! use futures_lite::*;</span>
 <span class="doccomment">//! use std::fs::File;</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! block_on(async {</span>
-<span class="doccomment">//!     let input = Unblock::new(File::open(&quot;file.txt&quot;)?);</span>
-<span class="doccomment">//!     let mut output = Unblock::new(std::io::stdout());</span>
+<span class="doccomment">//! # future::block_on(async {</span>
+<span class="doccomment">//! let input = Unblock::new(File::open(&quot;file.txt&quot;)?);</span>
+<span class="doccomment">//! let mut output = Unblock::new(std::io::stdout());</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!     io::copy(input, &amp;mut output).await?;</span>
-<span class="doccomment">//!     io::Result::Ok(())</span>
-<span class="doccomment">//! });</span>
+<span class="doccomment">//! io::copy(input, &amp;mut output).await?;</span>
+<span class="doccomment">//! # io::Result::Ok(()) });</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Iterate over the contents of a directory:</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```no_run</span>
-<span class="doccomment">//! use blocking::{block_on, Unblock};</span>
+<span class="doccomment">//! use blocking::Unblock;</span>
 <span class="doccomment">//! use futures_lite::*;</span>
 <span class="doccomment">//! use std::fs;</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! block_on(async {</span>
-<span class="doccomment">//!     let mut dir = Unblock::new(fs::read_dir(&quot;.&quot;)?);</span>
-<span class="doccomment">//!     while let Some(item) = dir.next().await {</span>
-<span class="doccomment">//!         println!(&quot;{}&quot;, item?.file_name().to_string_lossy());</span>
-<span class="doccomment">//!     }</span>
-<span class="doccomment">//!     io::Result::Ok(())</span>
-<span class="doccomment">//! });</span>
+<span class="doccomment">//! # future::block_on(async {</span>
+<span class="doccomment">//! let mut dir = Unblock::new(fs::read_dir(&quot;.&quot;)?);</span>
+<span class="doccomment">//! while let Some(item) = dir.next().await {</span>
+<span class="doccomment">//!     println!(&quot;{}&quot;, item?.file_name().to_string_lossy());</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//! # io::Result::Ok(()) });</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Convert a stream into an iterator:</span>
+<span class="doccomment">//! Spawn a process:</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```</span>
-<span class="doccomment">//! use blocking::BlockOn;</span>
-<span class="doccomment">//! use futures_lite::*;</span>
+<span class="doccomment">//! ```no_run</span>
+<span class="doccomment">//! use blocking::unblock;</span>
+<span class="doccomment">//! use std::process::Command;</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! let stream = stream::once(7);</span>
-<span class="doccomment">//! let mut iter = BlockOn::new(Box::pin(stream));</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! assert_eq!(iter.next(), Some(7));</span>
-<span class="doccomment">//! assert_eq!(iter.next(), None);</span>
+<span class="doccomment">//! # futures_lite::future::block_on(async {</span>
+<span class="doccomment">//! let out = unblock!(Command::new(&quot;dir&quot;).output())?;</span>
+<span class="doccomment">//! # std::io::Result::Ok(()) });</span>
 <span class="doccomment">//! ```</span>
 
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>, <span class="ident">missing_debug_implementations</span>, <span class="ident">rust_2018_idioms</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">any</span>::<span class="ident">Any</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::<span class="ident">RefCell</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">VecDeque</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">Read</span>, <span class="ident">Seek</span>, <span class="ident">SeekFrom</span>, <span class="ident">Write</span>};
@@ -1543,7 +1278,7 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::{<span class="self">self</span>, <span class="ident">AtomicBool</span>, <span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Condvar</span>, <span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>, <span class="ident">Waker</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
 
@@ -1551,7 +1286,6 @@
 <span class="kw">use</span> <span class="ident">atomic_waker</span>::<span class="ident">AtomicWaker</span>;
 <span class="kw">use</span> <span class="ident">futures_lite</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">once_cell</span>::<span class="ident">sync</span>::<span class="ident">Lazy</span>;
-<span class="kw">use</span> <span class="ident">parking</span>::<span class="ident">Parker</span>;
 <span class="kw">use</span> <span class="ident">waker_fn</span>::<span class="ident">waker_fn</span>;
 
 <span class="doccomment">/// Awaits the output of a spawned future.</span>
@@ -1730,262 +1464,28 @@
     }
 }
 
-<span class="doccomment">/// Blocks the current thread on a future.</span>
+<span class="doccomment">/// Runs blocking code on a thread pool.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Desugaring</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Note that `unblock!(expr)` is syntax sugar for:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```ignore</span>
+<span class="doccomment">/// Unblock::new(()).with_mut(move |_| expr).await</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `()` value is not used - this is just a cute trick to call [`Unblock::with_mut()`] with a</span>
+<span class="doccomment">/// closure on the thread pool.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use blocking::block_on;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let val = block_on(async {</span>
-<span class="doccomment">///     1 + 2</span>
-<span class="doccomment">/// });</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(val, 3);</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">block_on</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">future</span>: <span class="kw">impl</span> <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
-    <span class="comment">// Pin the future on the stack.</span>
-    <span class="macro">pin</span><span class="macro">!</span>(<span class="ident">future</span>);
-
-    <span class="comment">// Creates a parker and an associated waker that unparks it.</span>
-    <span class="kw">fn</span> <span class="ident">parker_and_waker</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Parker</span>, <span class="ident">Waker</span>) {
-        <span class="kw">let</span> <span class="ident">parker</span> <span class="op">=</span> <span class="ident">Parker</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">unparker</span> <span class="op">=</span> <span class="ident">parker</span>.<span class="ident">unparker</span>();
-        <span class="kw">let</span> <span class="ident">waker</span> <span class="op">=</span> <span class="ident">waker_fn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">unparker</span>.<span class="ident">unpark</span>());
-        (<span class="ident">parker</span>, <span class="ident">waker</span>)
-    }
-
-    <span class="macro">thread_local</span><span class="macro">!</span> {
-        <span class="comment">// Cached parker and waker for efficiency.</span>
-        <span class="kw">static</span> <span class="ident">CACHE</span>: <span class="ident">RefCell</span><span class="op">&lt;</span>(<span class="ident">Parker</span>, <span class="ident">Waker</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RefCell</span>::<span class="ident">new</span>(<span class="ident">parker_and_waker</span>());
-    }
-
-    <span class="ident">CACHE</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cache</span><span class="op">|</span> {
-        <span class="comment">// Try grabbing the cached parker and waker.</span>
-        <span class="kw">match</span> <span class="ident">cache</span>.<span class="ident">try_borrow_mut</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">cache</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="comment">// Use the cached parker and waker.</span>
-                <span class="kw">let</span> (<span class="ident">parker</span>, <span class="ident">waker</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">cache</span>;
-                <span class="kw">let</span> <span class="ident">cx</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>::<span class="ident">from_waker</span>(<span class="kw-2">&amp;</span><span class="ident">waker</span>);
-
-                <span class="comment">// Keep polling until the future is ready.</span>
-                <span class="kw">loop</span> {
-                    <span class="kw">match</span> <span class="ident">future</span>.<span class="ident">as_mut</span>().<span class="ident">poll</span>(<span class="ident">cx</span>) {
-                        <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="ident">output</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">output</span>,
-                        <span class="ident">Poll</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">parker</span>.<span class="ident">park</span>(),
-                    }
-                }
-            }
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="comment">// Looks like this is a recursive `block_on()` call.</span>
-                <span class="comment">// Create a fresh parker and waker.</span>
-                <span class="kw">let</span> (<span class="ident">parker</span>, <span class="ident">waker</span>) <span class="op">=</span> <span class="ident">parker_and_waker</span>();
-                <span class="kw">let</span> <span class="ident">cx</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span>::<span class="ident">from_waker</span>(<span class="kw-2">&amp;</span><span class="ident">waker</span>);
-
-                <span class="comment">// Keep polling until the future is ready.</span>
-                <span class="kw">loop</span> {
-                    <span class="kw">match</span> <span class="ident">future</span>.<span class="ident">as_mut</span>().<span class="ident">poll</span>(<span class="ident">cx</span>) {
-                        <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="ident">output</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">output</span>,
-                        <span class="ident">Poll</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">parker</span>.<span class="ident">park</span>(),
-                    }
-                }
-            }
-        }
-    })
-}
-
-<span class="doccomment">/// Blocks the current thread on async code.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that `block_on!(expr)` is just syntax sugar for `block_on(async move { expr })`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use blocking::block_on;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let val = block_on! {</span>
-<span class="doccomment">///     1 + 2</span>
-<span class="doccomment">/// };</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(val, 3);</span>
-<span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">block_on</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">block_on</span>(<span class="kw">async</span> <span class="kw">move</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)<span class="op">*</span> })
-    };
-}
-
-<span class="doccomment">/// Blocking interface for async I/O.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Sometimes async I/O needs to be used in a blocking manner. If calling [`block_on()`] manually</span>
-<span class="doccomment">/// all the time becomes too tedious, use this type for more convenient blocking on async I/O</span>
-<span class="doccomment">/// operations.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This type implements traits [`Iterator`], [`Read`], [`Write`], or [`Seek`] if the inner type</span>
-<span class="doccomment">/// implements [`Stream`], [`AsyncRead`], [`AsyncWrite`], or [`AsyncSeek`], respectively.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If writing data through the [`Write`] trait, make sure to flush before dropping the [`BlockOn`]</span>
-<span class="doccomment">/// handle or some buffered data might get lost.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BlockOn</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">T</span>);
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">BlockOn</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Wraps an async I/O handle into a blocking interface.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use blocking::BlockOn;</span>
-    <span class="doccomment">/// use futures_lite::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let stream = stream::once(7);</span>
-    <span class="doccomment">/// let iter = BlockOn::new(Box::pin(stream));</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">io</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BlockOn</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">BlockOn</span>(<span class="ident">io</span>)
-    }
-
-    <span class="doccomment">/// Gets a reference to the async I/O handle.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use blocking::BlockOn;</span>
-    <span class="doccomment">/// use futures_lite::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let stream = stream::once(7);</span>
-    <span class="doccomment">/// let iter = BlockOn::new(Box::pin(stream));</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// println!(&quot;{:?}&quot;, iter.get_ref().size_hint());</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
-    }
-
-    <span class="doccomment">/// Gets a mutable reference to the async I/O handle.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use blocking::{block_on, BlockOn};</span>
-    <span class="doccomment">/// use futures_lite::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let stream = stream::once(7);</span>
-    <span class="doccomment">/// let mut iter = BlockOn::new(Box::pin(stream));</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let val = block_on(async {</span>
-    <span class="doccomment">///     // This is async `next()` on the inner stream.</span>
-    <span class="doccomment">///     iter.get_mut().next().await</span>
-    <span class="doccomment">/// });</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// assert_eq!(val, Some(7));</span>
-    <span class="doccomment">/// assert_eq!(iter.next(), None);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>
-    }
-
-    <span class="doccomment">/// Extracts the inner async I/O handle.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use blocking::BlockOn;</span>
-    <span class="doccomment">/// use futures_lite::*;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let stream = stream::once(7);</span>
-    <span class="doccomment">/// let iter = BlockOn::new(Box::pin(stream));</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // The inner pinned stream.</span>
-    <span class="doccomment">/// let stream = iter.into_inner();</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
-        <span class="self">self</span>.<span class="number">0</span>
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Stream</span> <span class="op">+</span> <span class="ident">Unpin</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">BlockOn</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">Item</span>;
-
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
-        <span class="ident">block_on</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">next</span>())
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">Unpin</span><span class="op">&gt;</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">BlockOn</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="ident">block_on</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>(<span class="ident">buf</span>))
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span><span class="op">&gt;</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">BlockOn</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="ident">block_on</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>))
-    }
-
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="ident">block_on</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">flush</span>())
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsyncSeek</span> <span class="op">+</span> <span class="ident">Unpin</span><span class="op">&gt;</span> <span class="ident">Seek</span> <span class="kw">for</span> <span class="ident">BlockOn</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">seek</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pos</span>: <span class="ident">SeekFrom</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
-        <span class="ident">block_on</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">seek</span>(<span class="ident">pos</span>))
-    }
-}
-
-<span class="doccomment">/// Moves a blocking closure onto the thread pool.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Read a file into a string:</span>
+<span class="doccomment">/// Read the contents of a file.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```no_run</span>
 <span class="doccomment">/// use blocking::unblock;</span>
 <span class="doccomment">/// use std::fs;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// # blocking::block_on(async {</span>
-<span class="doccomment">/// let contents = unblock(|| fs::read_to_string(&quot;file.txt&quot;)).await?;</span>
-<span class="doccomment">/// # std::io::Result::Ok(()) });</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Spawn a process:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```no_run</span>
-<span class="doccomment">/// use blocking::unblock;</span>
-<span class="doccomment">/// use std::process::Command;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # blocking::block_on(async {</span>
-<span class="doccomment">/// let out = unblock(|| Command::new(&quot;dir&quot;).output()).await?;</span>
-<span class="doccomment">/// # std::io::Result::Ok(()) });</span>
-<span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">unblock</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnOnce</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">T</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-{
-    <span class="kw">let</span> (<span class="ident">sender</span>, <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">bounded</span>(<span class="number">1</span>);
-    <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">Executor</span>::<span class="ident">spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">try_send</span>(<span class="ident">f</span>());
-    });
-    <span class="ident">task</span>.<span class="kw">await</span>;
-    <span class="ident">receiver</span>.<span class="ident">recv</span>().<span class="kw">await</span>.<span class="ident">expect</span>(<span class="string">&quot;future has panicked&quot;</span>)
-}
-
-<span class="doccomment">/// Moves blocking code onto the thread pool.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that `unblock!(expr)` is just syntax sugar for `unblock(move || expr).await`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Read a file into a string:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```no_run</span>
-<span class="doccomment">/// use blocking::unblock;</span>
-<span class="doccomment">/// use std::fs;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # blocking::block_on(async {</span>
+<span class="doccomment">/// # futures_lite::future::block_on(async {</span>
 <span class="doccomment">/// let contents = unblock!(fs::read_to_string(&quot;file.txt&quot;))?;</span>
 <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
 <span class="doccomment">/// ```</span>
@@ -1996,20 +1496,20 @@
 <span class="doccomment">/// use blocking::unblock;</span>
 <span class="doccomment">/// use std::process::Command;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// # blocking::block_on(async {</span>
+<span class="doccomment">/// # futures_lite::future::block_on(async {</span>
 <span class="doccomment">/// let out = unblock!(Command::new(&quot;dir&quot;).output())?;</span>
 <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">unblock</span> {
     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">unblock</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)<span class="op">*</span> }).<span class="kw">await</span>
+        <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Unblock</span>::<span class="ident">new</span>(()).<span class="ident">with_mut</span>(<span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>)<span class="op">*</span> }).<span class="kw">await</span>
     };
 }
 
-<span class="doccomment">/// Async interface for blocking I/O.</span>
+<span class="doccomment">/// Runs blocking I/O on a thread pool.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Blocking I/O must be isolated from async code. This type moves blocking operations onto a</span>
+<span class="doccomment">/// Blocking I/O must be isolated from async code. This type moves blocking I/O operations onto a</span>
 <span class="doccomment">/// special thread pool while exposing a familiar async interface.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This type implements traits [`Stream`], [`AsyncRead`], [`AsyncWrite`], or [`AsyncSeek`] if the</span>
@@ -2023,10 +1523,9 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// use blocking::Unblock;</span>
 <span class="doccomment">/// use futures_lite::*;</span>
-<span class="doccomment">/// use std::io::stdout;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// # blocking::block_on(async {</span>
-<span class="doccomment">/// let mut stdout = Unblock::new(stdout());</span>
+<span class="doccomment">/// # futures_lite::future::block_on(async {</span>
+<span class="doccomment">/// let mut stdout = Unblock::new(std::io::stdout());</span>
 <span class="doccomment">/// stdout.write_all(b&quot;Hello world!&quot;).await?;</span>
 <span class="doccomment">/// stdout.flush().await?;</span>
 <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -2034,15 +1533,14 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Unblock</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">State</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Unblock</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Wraps a blocking I/O handle into an async interface.</span>
+    <span class="doccomment">/// Wraps a blocking I/O handle into the async [`Unblock`] interface.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```no_run</span>
     <span class="doccomment">/// use blocking::Unblock;</span>
-    <span class="doccomment">/// use std::io::stdin;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let stdin = Unblock::new(stdin());</span>
+    <span class="doccomment">/// let stdin = Unblock::new(std::io::stdin());</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">io</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Unblock</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">Unblock</span>(<span class="ident">State</span>::<span class="ident">Idle</span>(<span class="prelude-val">Some</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">io</span>))))
@@ -2059,7 +1557,7 @@
     <span class="doccomment">/// use blocking::Unblock;</span>
     <span class="doccomment">/// use std::fs::File;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let mut file = Unblock::new(File::create(&quot;file.txt&quot;)?);</span>
     <span class="doccomment">/// let metadata = file.get_mut().await.metadata()?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -2089,7 +1587,7 @@
     <span class="doccomment">/// use blocking::Unblock;</span>
     <span class="doccomment">/// use std::fs::File;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let mut file = Unblock::new(File::create(&quot;file.txt&quot;)?);</span>
     <span class="doccomment">/// let metadata = file.with_mut(|f| f.metadata()).await?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -2140,7 +1638,7 @@
     <span class="doccomment">/// use futures_lite::*;</span>
     <span class="doccomment">/// use std::fs::File;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let mut file = Unblock::new(File::create(&quot;file.txt&quot;)?);</span>
     <span class="doccomment">/// file.write_all(b&quot;Hello world!&quot;).await?;</span>
     <span class="doccomment">///</span>

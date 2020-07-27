@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/async-io-0.1.5/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../async_io/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/async-io-0.1.6/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../async_io/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1262,6 +1262,41 @@
 <span id="1262">1262</span>
 <span id="1263">1263</span>
 <span id="1264">1264</span>
+<span id="1265">1265</span>
+<span id="1266">1266</span>
+<span id="1267">1267</span>
+<span id="1268">1268</span>
+<span id="1269">1269</span>
+<span id="1270">1270</span>
+<span id="1271">1271</span>
+<span id="1272">1272</span>
+<span id="1273">1273</span>
+<span id="1274">1274</span>
+<span id="1275">1275</span>
+<span id="1276">1276</span>
+<span id="1277">1277</span>
+<span id="1278">1278</span>
+<span id="1279">1279</span>
+<span id="1280">1280</span>
+<span id="1281">1281</span>
+<span id="1282">1282</span>
+<span id="1283">1283</span>
+<span id="1284">1284</span>
+<span id="1285">1285</span>
+<span id="1286">1286</span>
+<span id="1287">1287</span>
+<span id="1288">1288</span>
+<span id="1289">1289</span>
+<span id="1290">1290</span>
+<span id="1291">1291</span>
+<span id="1292">1292</span>
+<span id="1293">1293</span>
+<span id="1294">1294</span>
+<span id="1295">1295</span>
+<span id="1296">1296</span>
+<span id="1297">1297</span>
+<span id="1298">1298</span>
+<span id="1299">1299</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Async I/O and timers.</span>
 <span class="doccomment">//!</span>
@@ -1291,7 +1326,9 @@
     <span class="ident">path</span>::<span class="ident">Path</span>,
 };
 
-<span class="kw">use</span> <span class="ident">futures_lite</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">futures_lite</span>::<span class="ident">io</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>};
+<span class="kw">use</span> <span class="ident">futures_lite</span>::<span class="ident">stream</span>::{<span class="self">self</span>, <span class="ident">Stream</span>};
+<span class="kw">use</span> <span class="ident">futures_lite</span>::{<span class="ident">future</span>, <span class="ident">pin</span>, <span class="ident">ready</span>};
 <span class="kw">use</span> <span class="ident">socket2</span>::{<span class="ident">Domain</span>, <span class="ident">Protocol</span>, <span class="ident">Socket</span>, <span class="ident">Type</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parking</span>::{<span class="ident">Reactor</span>, <span class="ident">Source</span>};
@@ -1299,7 +1336,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">parking</span>;
 <span class="kw">mod</span> <span class="ident">sys</span>;
 
-<span class="doccomment">/// Fires at the chosen point in time.</span>
+<span class="doccomment">/// A timer that expires after a duration of time.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Timers are futures that output the [`Instant`] at which they fired.</span>
 <span class="doccomment">///</span>
@@ -1315,7 +1352,7 @@
 <span class="doccomment">///     Timer::new(dur).await;</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// # blocking::block_on(async {</span>
+<span class="doccomment">/// # futures_lite::future::block_on(async {</span>
 <span class="doccomment">/// sleep(Duration::from_secs(1)).await;</span>
 <span class="doccomment">/// # });</span>
 <span class="doccomment">/// ```</span>
@@ -1331,7 +1368,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Timer</span> {
-    <span class="doccomment">/// Fires after the specified duration of time.</span>
+    <span class="doccomment">/// Creates a timer that expires after the given duration of time.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -1339,7 +1376,7 @@
     <span class="doccomment">/// use async_io::Timer;</span>
     <span class="doccomment">/// use std::time::Duration;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// Timer::new(Duration::from_secs(1)).await;</span>
     <span class="doccomment">/// # });</span>
     <span class="doccomment">/// ```</span>
@@ -1347,6 +1384,38 @@
         <span class="ident">Timer</span> {
             <span class="ident">id_and_waker</span>: <span class="prelude-val">None</span>,
             <span class="ident">when</span>: <span class="ident">Instant</span>::<span class="ident">now</span>() <span class="op">+</span> <span class="ident">dur</span>,
+        }
+    }
+
+    <span class="doccomment">/// Resets the timer to expire after the new duration of time.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that resetting a timer is different from creating a new timer because</span>
+    <span class="doccomment">/// [`reset()`][`Timer::reset()`] does not remove the waker associated with the task that is</span>
+    <span class="doccomment">/// polling the timer.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use async_io::Timer;</span>
+    <span class="doccomment">/// use std::time::Duration;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
+    <span class="doccomment">/// let mut t = Timer::new(Duration::from_secs(1));</span>
+    <span class="doccomment">/// t.reset(Duration::from_millis(100));</span>
+    <span class="doccomment">/// # });</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reset</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dur</span>: <span class="ident">Duration</span>) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">id</span>, <span class="kw">_</span>)) <span class="op">=</span> <span class="self">self</span>.<span class="ident">id_and_waker</span>.<span class="ident">as_ref</span>() {
+            <span class="comment">// Deregister the timer from the reactor.</span>
+            <span class="ident">Reactor</span>::<span class="ident">get</span>().<span class="ident">remove_timer</span>(<span class="self">self</span>.<span class="ident">when</span>, <span class="kw-2">*</span><span class="ident">id</span>);
+        }
+
+        <span class="comment">// Update the timeout.</span>
+        <span class="self">self</span>.<span class="ident">when</span> <span class="op">=</span> <span class="ident">Instant</span>::<span class="ident">now</span>() <span class="op">+</span> <span class="ident">dur</span>;
+
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">id</span>, <span class="ident">waker</span>)) <span class="op">=</span> <span class="self">self</span>.<span class="ident">id_and_waker</span>.<span class="ident">as_mut</span>() {
+            <span class="comment">// Re-register the timer with the new timeout.</span>
+            <span class="kw-2">*</span><span class="ident">id</span> <span class="op">=</span> <span class="ident">Reactor</span>::<span class="ident">get</span>().<span class="ident">insert_timer</span>(<span class="self">self</span>.<span class="ident">when</span>, <span class="ident">waker</span>);
         }
     }
 }
@@ -1415,9 +1484,10 @@
 <span class="doccomment">/// ```no_run</span>
 <span class="doccomment">/// use async_dup::Arc;</span>
 <span class="doccomment">/// use async_io::Async;</span>
+<span class="doccomment">/// use futures_lite::io;</span>
 <span class="doccomment">/// use std::net::TcpStream;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// # blocking::block_on(async {</span>
+<span class="doccomment">/// # futures_lite::future::block_on(async {</span>
 <span class="doccomment">/// // Connect to a local server.</span>
 <span class="doccomment">/// let stream = Async::&lt;TcpStream&gt;::connect(([127, 0, 0, 1], 8000)).await?;</span>
 <span class="doccomment">///</span>
@@ -1426,7 +1496,7 @@
 <span class="doccomment">/// let mut writer = reader.clone();</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// // Echo all messages from the read side of the stream into the write side.</span>
-<span class="doccomment">/// futures::io::copy(reader, &amp;mut writer).await?;</span>
+<span class="doccomment">/// io::copy(reader, &amp;mut writer).await?;</span>
 <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
@@ -1436,12 +1506,12 @@
 <span class="doccomment">/// ```no_run</span>
 <span class="doccomment">/// use async_dup::{Arc, Mutex};</span>
 <span class="doccomment">/// use async_io::Async;</span>
-<span class="doccomment">/// use futures::prelude::*;</span>
+<span class="doccomment">/// use futures_lite::{io, AsyncRead, AsyncWrite};</span>
 <span class="doccomment">/// use std::net::TcpStream;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// # blocking::block_on(async {</span>
+<span class="doccomment">/// # futures_lite::future::block_on(async {</span>
 <span class="doccomment">/// // Reads data from a stream and echoes it back.</span>
-<span class="doccomment">/// async fn echo(stream: impl AsyncRead + AsyncWrite + Unpin) -&gt; std::io::Result&lt;u64&gt; {</span>
+<span class="doccomment">/// async fn echo(stream: impl AsyncRead + AsyncWrite + Unpin) -&gt; io::Result&lt;u64&gt; {</span>
 <span class="doccomment">///     let stream = Mutex::new(stream);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     // Create two handles to the stream.</span>
@@ -1449,7 +1519,7 @@
 <span class="doccomment">///     let mut writer = reader.clone();</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     // Echo all messages from the read side of the stream into the write side.</span>
-<span class="doccomment">///     futures::io::copy(reader, &amp;mut writer).await</span>
+<span class="doccomment">///     io::copy(reader, &amp;mut writer).await</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// // Connect to a local server and echo its messages back.</span>
@@ -1499,7 +1569,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::{SocketAddr, TcpListener};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = TcpListener::bind(SocketAddr::from(([127, 0, 0, 1], 0)))?;</span>
     <span class="doccomment">/// let listener = Async::new(listener)?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -1548,7 +1618,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::{SocketAddr, TcpListener};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = TcpListener::bind(SocketAddr::from(([127, 0, 0, 1], 0)))?;</span>
     <span class="doccomment">/// let listener = Async::new(listener)?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -1577,7 +1647,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::TcpListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = Async::&lt;TcpListener&gt;::bind(([127, 0, 0, 1], 0))?;</span>
     <span class="doccomment">/// let inner = listener.get_ref();</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -1594,7 +1664,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::TcpListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let mut listener = Async::&lt;TcpListener&gt;::bind(([127, 0, 0, 1], 0))?;</span>
     <span class="doccomment">/// let inner = listener.get_mut();</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -1611,7 +1681,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::TcpListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = Async::&lt;TcpListener&gt;::bind(([127, 0, 0, 1], 0))?;</span>
     <span class="doccomment">/// let inner = listener.into_inner()?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -1632,7 +1702,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::TcpListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let mut listener = Async::&lt;TcpListener&gt;::bind(([127, 0, 0, 1], 0))?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // Wait until a client can be accepted.</span>
@@ -1653,7 +1723,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::{TcpStream, ToSocketAddrs};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let addr = &quot;example.com:80&quot;.to_socket_addrs()?.next().unwrap();</span>
     <span class="doccomment">/// let stream = Async::&lt;TcpStream&gt;::connect(addr).await?;</span>
     <span class="doccomment">///</span>
@@ -1680,7 +1750,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::TcpListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = Async::&lt;TcpListener&gt;::bind(([127, 0, 0, 1], 0))?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // Accept a new client asynchronously.</span>
@@ -1715,7 +1785,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::TcpListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let mut listener = Async::&lt;TcpListener&gt;::bind(([127, 0, 0, 1], 0))?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // Accept a new client asynchronously.</span>
@@ -1753,7 +1823,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::UdpSocket;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UdpSocket&gt;::bind(([127, 0, 0, 1], 8000))?;</span>
     <span class="doccomment">/// socket.get_ref().connect(&quot;127.0.0.1:9000&quot;)?;</span>
     <span class="doccomment">///</span>
@@ -1789,7 +1859,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::UdpSocket;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let mut socket = Async::&lt;UdpSocket&gt;::bind(([127, 0, 0, 1], 8000))?;</span>
     <span class="doccomment">/// socket.get_ref().connect(&quot;127.0.0.1:9000&quot;)?;</span>
     <span class="doccomment">///</span>
@@ -1931,7 +2001,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::TcpListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = Async::&lt;TcpListener&gt;::bind(([127, 0, 0, 1], 0))?;</span>
     <span class="doccomment">/// println!(&quot;Listening on {}&quot;, listener.get_ref().local_addr()?);</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -1952,7 +2022,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::TcpListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = Async::&lt;TcpListener&gt;::bind(([127, 0, 0, 1], 8000))?;</span>
     <span class="doccomment">/// let (stream, addr) = listener.accept().await?;</span>
     <span class="doccomment">/// println!(&quot;Accepted client: {}&quot;, addr);</span>
@@ -1971,10 +2041,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```no_run</span>
     <span class="doccomment">/// use async_io::Async;</span>
-    <span class="doccomment">/// use futures::prelude::*;</span>
+    <span class="doccomment">/// use futures_lite::stream::StreamExt;</span>
     <span class="doccomment">/// use std::net::TcpListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = Async::&lt;TcpListener&gt;::bind(([127, 0, 0, 1], 8000))?;</span>
     <span class="doccomment">/// let mut incoming = listener.incoming();</span>
     <span class="doccomment">///</span>
@@ -2001,7 +2071,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::{TcpStream, ToSocketAddrs};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let addr = &quot;example.com:80&quot;.to_socket_addrs()?.next().unwrap();</span>
     <span class="doccomment">/// let stream = Async::&lt;TcpStream&gt;::connect(addr).await?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -2053,10 +2123,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use async_io::Async;</span>
-    <span class="doccomment">/// use futures::prelude::*;</span>
+    <span class="doccomment">/// use futures_lite::{io::AsyncWriteExt, stream::StreamExt};</span>
     <span class="doccomment">/// use std::net::{TcpStream, ToSocketAddrs};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let addr = &quot;example.com:80&quot;.to_socket_addrs()?.next().unwrap();</span>
     <span class="doccomment">/// let mut stream = Async::&lt;TcpStream&gt;::connect(addr).await?;</span>
     <span class="doccomment">///</span>
@@ -2084,7 +2154,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::UdpSocket;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UdpSocket&gt;::bind(([127, 0, 0, 1], 0))?;</span>
     <span class="doccomment">/// println!(&quot;Bound to {}&quot;, socket.get_ref().local_addr()?);</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -2107,7 +2177,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::UdpSocket;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UdpSocket&gt;::bind(([127, 0, 0, 1], 8000))?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let mut buf = [0u8; 1024];</span>
@@ -2131,7 +2201,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::UdpSocket;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UdpSocket&gt;::bind(([127, 0, 0, 1], 8000))?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let mut buf = [0u8; 1024];</span>
@@ -2152,7 +2222,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::UdpSocket;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UdpSocket&gt;::bind(([127, 0, 0, 1], 0))?;</span>
     <span class="doccomment">/// let addr = socket.get_ref().local_addr()?;</span>
     <span class="doccomment">///</span>
@@ -2181,7 +2251,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::UdpSocket;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UdpSocket&gt;::bind(([127, 0, 0, 1], 8000))?;</span>
     <span class="doccomment">/// socket.get_ref().connect(&quot;127.0.0.1:9000&quot;)?;</span>
     <span class="doccomment">///</span>
@@ -2210,7 +2280,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::UdpSocket;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UdpSocket&gt;::bind(([127, 0, 0, 1], 8000))?;</span>
     <span class="doccomment">/// socket.get_ref().connect(&quot;127.0.0.1:9000&quot;)?;</span>
     <span class="doccomment">///</span>
@@ -2235,7 +2305,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::net::UdpSocket;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UdpSocket&gt;::bind(([127, 0, 0, 1], 8000))?;</span>
     <span class="doccomment">/// socket.get_ref().connect(&quot;127.0.0.1:9000&quot;)?;</span>
     <span class="doccomment">///</span>
@@ -2258,7 +2328,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = Async::&lt;UnixListener&gt;::bind(&quot;/tmp/socket&quot;)?;</span>
     <span class="doccomment">/// println!(&quot;Listening on {:?}&quot;, listener.get_ref().local_addr()?);</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
@@ -2279,7 +2349,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = Async::&lt;UnixListener&gt;::bind(&quot;/tmp/socket&quot;)?;</span>
     <span class="doccomment">/// let (stream, addr) = listener.accept().await?;</span>
     <span class="doccomment">/// println!(&quot;Accepted client: {:?}&quot;, addr);</span>
@@ -2298,10 +2368,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```no_run</span>
     <span class="doccomment">/// use async_io::Async;</span>
-    <span class="doccomment">/// use futures::prelude::*;</span>
+    <span class="doccomment">/// use futures_lite::stream::StreamExt;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixListener;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let listener = Async::&lt;UnixListener&gt;::bind(&quot;/tmp/socket&quot;)?;</span>
     <span class="doccomment">/// let mut incoming = listener.incoming();</span>
     <span class="doccomment">///</span>
@@ -2331,7 +2401,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixStream;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let stream = Async::&lt;UnixStream&gt;::connect(&quot;/tmp/socket&quot;).await?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
     <span class="doccomment">/// ```</span>
@@ -2366,7 +2436,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixStream;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let (stream1, stream2) = Async::&lt;UnixStream&gt;::pair()?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
     <span class="doccomment">/// ```</span>
@@ -2386,7 +2456,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixDatagram;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UnixDatagram&gt;::bind(&quot;/tmp/socket&quot;)?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
     <span class="doccomment">/// ```</span>
@@ -2403,7 +2473,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixDatagram;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UnixDatagram&gt;::unbound()?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
     <span class="doccomment">/// ```</span>
@@ -2419,7 +2489,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixDatagram;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let (socket1, socket2) = Async::&lt;UnixDatagram&gt;::pair()?;</span>
     <span class="doccomment">/// # std::io::Result::Ok(()) });</span>
     <span class="doccomment">/// ```</span>
@@ -2438,7 +2508,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixDatagram;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UnixDatagram&gt;::bind(&quot;/tmp/socket&quot;)?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let mut buf = [0u8; 1024];</span>
@@ -2459,7 +2529,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixDatagram;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UnixDatagram&gt;::unbound()?;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let msg = b&quot;hello&quot;;</span>
@@ -2484,7 +2554,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixDatagram;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UnixDatagram&gt;::bind(&quot;/tmp/socket1&quot;)?;</span>
     <span class="doccomment">/// socket.get_ref().connect(&quot;/tmp/socket2&quot;)?;</span>
     <span class="doccomment">///</span>
@@ -2509,7 +2579,7 @@
     <span class="doccomment">/// use async_io::Async;</span>
     <span class="doccomment">/// use std::os::unix::net::UnixDatagram;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # blocking::block_on(async {</span>
+    <span class="doccomment">/// # futures_lite::future::block_on(async {</span>
     <span class="doccomment">/// let socket = Async::&lt;UnixDatagram&gt;::bind(&quot;/tmp/socket1&quot;)?;</span>
     <span class="doccomment">/// socket.get_ref().connect(&quot;/tmp/socket2&quot;)?;</span>
     <span class="doccomment">///</span>

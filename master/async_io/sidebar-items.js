@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["parking","Thread parking and unparking."]],"struct":[["Async","Async I/O."],["Timer","Fires at the chosen point in time."]]});
+initSidebarItems({"mod":[["parking","Thread parking and unparking."]],"struct":[["Async","Async I/O."],["Timer","A timer that expires after a duration of time."]]});

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/async-io-0.1.5/src/parking.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>parking.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../async_io/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/async-io-0.1.6/src/parking.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>parking.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../async_io/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -755,12 +755,204 @@
 <span id="755">755</span>
 <span id="756">756</span>
 <span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Thread parking and unparking.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This module exposes the same API as [`parking`](https://docs.rs/parking). The only difference</span>
-<span class="doccomment">//! is that [`Parker`] in this module will wait on epoll/kqueue/wepoll and wake tasks blocked on</span>
-<span class="doccomment">//! I/O or timers.</span>
+<span class="doccomment">//! This module exposes the exact same API as [`parking`][docs-parking]. The only</span>
+<span class="doccomment">//! difference is that [`Parker`] in this module will wait on epoll/kqueue/wepoll and wake tasks</span>
+<span class="doccomment">//! blocked on I/O or timers.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Executors may use this mechanism to go to sleep when idle and wake up when more work is</span>
+<span class="doccomment">//! scheduled. By waking tasks blocked on I/O and then running those tasks on the same thread,</span>
+<span class="doccomment">//! no thread context switch is necessary when going between task execution and I/O.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! You can treat this module as merely an optimization over the [`parking`][docs-parking] crate.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [docs-parking]: https://docs.rs/parking</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # Examples</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! A simple `block_on()` that runs a single future and waits on I/O:</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//! use std::future::Future;</span>
+<span class="doccomment">//! use std::task::{Context, Poll};</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! use futures_lite::{future, pin};</span>
+<span class="doccomment">//! use waker_fn::waker_fn;</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! // Blocks on a future to complete, waiting on I/O when idle.</span>
+<span class="doccomment">//! fn block_on&lt;T&gt;(future: impl Future&lt;Output = T&gt;) -&gt; T {</span>
+<span class="doccomment">//!     // Create a waker that notifies through I/O when done.</span>
+<span class="doccomment">//!     let (p, u) = parking::pair();</span>
+<span class="doccomment">//!     let waker = waker_fn(move || u.unpark());</span>
+<span class="doccomment">//!     let cx = &amp;mut Context::from_waker(&amp;waker);</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!     pin!(future);</span>
+<span class="doccomment">//!     loop {</span>
+<span class="doccomment">//!         match future.as_mut().poll(cx) {</span>
+<span class="doccomment">//!             Poll::Ready(t) =&gt; return t, // Done!</span>
+<span class="doccomment">//!             Poll::Pending =&gt; p.park(),  // Wait for an I/O event.</span>
+<span class="doccomment">//!         }</span>
+<span class="doccomment">//!     }</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! block_on(async {</span>
+<span class="doccomment">//!     println!(&quot;Hello world!&quot;);</span>
+<span class="doccomment">//!     future::yield_now().await;</span>
+<span class="doccomment">//!     println!(&quot;Hello again!&quot;);</span>
+<span class="doccomment">//! });</span>
+<span class="doccomment">//! ```</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">BTreeMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
@@ -799,7 +991,7 @@
     (<span class="ident">p</span>, <span class="ident">u</span>)
 }
 
-<span class="doccomment">/// Parks a thread.</span>
+<span class="doccomment">/// Waits for a notification.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Parker</span> {
     <span class="ident">unparker</span>: <span class="ident">Unparker</span>,
 }
@@ -808,7 +1000,16 @@
 <span class="kw">impl</span> <span class="ident">RefUnwindSafe</span> <span class="kw">for</span> <span class="ident">Parker</span> {}
 
 <span class="kw">impl</span> <span class="ident">Parker</span> {
-    <span class="doccomment">/// Creates a new [`Parker`].</span>
+    <span class="doccomment">/// Creates a new parker.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use parking::Parker;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let p = Parker::new();</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Parker</span> {
         <span class="comment">// Ensure `Reactor` is initialized now to prevent it from being initialized in `Drop`.</span>
         <span class="ident">Reactor</span>::<span class="ident">get</span>();
@@ -826,29 +1027,109 @@
         <span class="ident">parker</span>
     }
 
-    <span class="doccomment">/// Blocks the current thread until the token is made available.</span>
+    <span class="doccomment">/// Blocks until notified and then goes back into unnotified state.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use parking::Parker;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let p = Parker::new();</span>
+    <span class="doccomment">/// let u = p.unparker();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Notify the parker.</span>
+    <span class="doccomment">/// u.unpark();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Wakes up immediately because the parker is notified.</span>
+    <span class="doccomment">/// p.park();</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">park</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">unparker</span>.<span class="ident">inner</span>.<span class="ident">park</span>(<span class="prelude-val">None</span>);
     }
 
-    <span class="doccomment">/// Blocks the current thread until the token is made available or the timeout is reached.</span>
+    <span class="doccomment">/// Blocks until notified and then goes back into unnotified state, or times out after</span>
+    <span class="doccomment">/// `duration`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `true` if notified before the timeout.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::time::Duration;</span>
+    <span class="doccomment">/// use parking::Parker;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let p = Parker::new();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Wait for a notification, or time out after 500 ms.</span>
+    <span class="doccomment">/// p.park_timeout(Duration::from_millis(500));</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">park_timeout</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">timeout</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">unparker</span>.<span class="ident">inner</span>.<span class="ident">park</span>(<span class="prelude-val">Some</span>(<span class="ident">timeout</span>))
     }
 
-    <span class="doccomment">/// Blocks the current thread until the token is made available or the deadline is reached.</span>
+    <span class="doccomment">/// Blocks until notified and then goes back into unnotified state, or times out at `instant`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `true` if notified before the deadline.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::time::{Duration, Instant};</span>
+    <span class="doccomment">/// use parking::Parker;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let p = Parker::new();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Wait for a notification, or time out after 500 ms.</span>
+    <span class="doccomment">/// p.park_deadline(Instant::now() + Duration::from_millis(500));</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">park_deadline</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">deadline</span>: <span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">unparker</span>
             .<span class="ident">inner</span>
             .<span class="ident">park</span>(<span class="prelude-val">Some</span>(<span class="ident">deadline</span>.<span class="ident">saturating_duration_since</span>(<span class="ident">Instant</span>::<span class="ident">now</span>())))
     }
 
-    <span class="doccomment">/// Atomically makes the token available if it is not already.</span>
+    <span class="doccomment">/// Notifies the parker.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::thread;</span>
+    <span class="doccomment">/// use std::time::Duration;</span>
+    <span class="doccomment">/// use parking::Parker;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let p = Parker::new();</span>
+    <span class="doccomment">/// let u = p.unparker();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// thread::spawn(move || {</span>
+    <span class="doccomment">///     thread::sleep(Duration::from_millis(500));</span>
+    <span class="doccomment">///     u.unpark();</span>
+    <span class="doccomment">/// });</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Wakes up when `u.unpark()` notifies and then goes back into unnotified state.</span>
+    <span class="doccomment">/// p.park();</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unpark</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">unparker</span>.<span class="ident">unpark</span>()
     }
 
     <span class="doccomment">/// Returns a handle for unparking.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The returned [`Unparker`] can be cloned and shared among threads.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use parking::Parker;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let p = Parker::new();</span>
+    <span class="doccomment">/// let u = p.unparker();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Notify the parker.</span>
+    <span class="doccomment">/// u.unpark();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Wakes up immediately because the parker is notified.</span>
+    <span class="doccomment">/// p.park();</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unparker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Unparker</span> {
         <span class="self">self</span>.<span class="ident">unparker</span>.<span class="ident">clone</span>()
     }
@@ -873,7 +1154,7 @@
     }
 }
 
-<span class="doccomment">/// Unparks a thread.</span>
+<span class="doccomment">/// Notifies a parker.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Unparker</span> {
     <span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Inner</span><span class="op">&gt;</span>,
 }
@@ -882,7 +1163,26 @@
 <span class="kw">impl</span> <span class="ident">RefUnwindSafe</span> <span class="kw">for</span> <span class="ident">Unparker</span> {}
 
 <span class="kw">impl</span> <span class="ident">Unparker</span> {
-    <span class="doccomment">/// Atomically makes the token available if it is not already.</span>
+    <span class="doccomment">/// Notifies the associated parker.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::thread;</span>
+    <span class="doccomment">/// use std::time::Duration;</span>
+    <span class="doccomment">/// use parking::Parker;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let p = Parker::new();</span>
+    <span class="doccomment">/// let u = p.unparker();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// thread::spawn(move || {</span>
+    <span class="doccomment">///     thread::sleep(Duration::from_millis(500));</span>
+    <span class="doccomment">///     u.unpark();</span>
+    <span class="doccomment">/// });</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Wakes up when `u.unpark()` notifies and then goes back into unnotified state.</span>
+    <span class="doccomment">/// p.park();</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unpark</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unpark</span>()
     }
@@ -1159,12 +1459,12 @@
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span> <span class="ident">raw</span>: <span class="ident">RawFd</span>,
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span> <span class="ident">raw</span>: <span class="ident">RawSocket</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Source</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="comment">// Register the file descriptor.</span>
+        <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">insert</span>(<span class="ident">raw</span>)<span class="question-mark">?</span>;
+
+        <span class="comment">// Create an I/O source for this file descriptor.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sources</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">sources</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">sources</span>.<span class="ident">next_vacant</span>();
-
-        <span class="comment">// Create a source and register it.</span>
-        <span class="self">self</span>.<span class="ident">sys</span>.<span class="ident">insert</span>(<span class="ident">raw</span>, <span class="ident">key</span>)<span class="question-mark">?</span>;
-
         <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Source</span> {
             <span class="ident">raw</span>,
             <span class="ident">key</span>,
