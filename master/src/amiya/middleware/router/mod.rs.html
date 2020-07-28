@@ -584,10 +584,10 @@
 <span class="doccomment">/// Evert [`at`] has a matched `done` or `is`, remember this, then you can use this API to build a</span>
 <span class="doccomment">/// router tree without any temp variable.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// I recommend use [`#[rustfmt::skip]`][rustfmt::skip] to pervent `rustfmt` to format the router builder code</span>
-<span class="doccomment">/// section, because `rustfmt` will align use `.` and all method will have same indent. No indent</span>
-<span class="doccomment">/// means no multi level view, no level means we need to be very careful when add new path to old</span>
-<span class="doccomment">/// router.</span>
+<span class="doccomment">/// Because that `rustfmt` align code using `.`, and all chain method call have same indent.</span>
+<span class="doccomment">/// No indent means no multi level view, no level means we need to be very careful when add</span>
+<span class="doccomment">/// new path to old router. So I recommend use [`#[rustfmt::skip]`][rustfmt::skip] to pervent</span>
+<span class="doccomment">/// `rustfmt` to format the router creating code section and indent router code by hand.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Examples</span>
 <span class="doccomment">///</span>

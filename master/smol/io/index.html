@@ -10,8 +10,8 @@
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">contents</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
 <span class="ident">reader</span>.<span class="ident">read_to_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">contents</span>).<span class="kw">await</span><span class="question-mark">?</span>;</pre></div>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
-<table><tr class='module-item'><td><a class="struct" href="struct.AssertAsync.html" title='smol::io::AssertAsync struct'>AssertAsync</a></td><td class='docblock-short'><p>Asserts that a type implementing [<code>std::io</code>] traits is also an async type.</p>
-</td></tr><tr class='module-item'><td><a class="struct" href="struct.BlockOn.html" title='smol::io::BlockOn struct'>BlockOn</a></td><td class='docblock-short'><p>Blocking interface for async I/O.</p>
+<table><tr class='module-item'><td><a class="struct" href="struct.AssertAsync.html" title='smol::io::AssertAsync struct'>AssertAsync</a></td><td class='docblock-short'><p>Asserts that a type implementing [<code>std::io</code>] traits can be used as an async type.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.BlockOn.html" title='smol::io::BlockOn struct'>BlockOn</a></td><td class='docblock-short'><p>Blocks on all async I/O operations and implements [<code>std::io</code>] traits.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.BufReader.html" title='smol::io::BufReader struct'>BufReader</a></td><td class='docblock-short'><p>Adds buffering to a reader.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.BufWriter.html" title='smol::io::BufWriter struct'>BufWriter</a></td><td class='docblock-short'><p>Adds buffering to a writer.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Bytes.html" title='smol::io::Bytes struct'>Bytes</a></td><td class='docblock-short'><p>Reader for the [<code>AsyncReadExt::bytes()</code>] method.</p>
